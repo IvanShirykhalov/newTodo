@@ -1,25 +1,28 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
 import {FilterValuesType} from "./App";
 
 
-export type TaskPropsType = {
+export type TaskType = {
     id: string
     title: string
     isDone: boolean;
 
 }
 
+
 type TodoListPropsType = {
+    todoListID: string
     title: string
-    task: TaskPropsType[];
+    task: TaskType[];
     filter: FilterValuesType
-    removeTask: (taskID: string) => void;
-    changeFilter: (filter: FilterValuesType) => void
-    addTask: (title: string) => void
-    changeTaskStatus: (taskID: string, isDone: boolean) => void
+    removeTask: (taskID: string, todolistID: string) => void;
+    changeFilter: (filter: FilterValuesType, todolistID: string) => void
+    addTask: (title: string, todolistID: string) => void
+    changeTaskStatus: (taskID: string, isDone: boolean, todolistID: string) => void
+    removeTodoList: (todolistID: string) => void
 }
 
-export const TodoList = (props: TodoListPropsType) => {
+export const TodoList: FC<TodoListPropsType> = (props) => {
 
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
@@ -37,7 +40,7 @@ export const TodoList = (props: TodoListPropsType) => {
     const addTask = () => {
         const trimmedTitle = title.trim()
         if (trimmedTitle) {
-            trimmedTitle && props.addTask(trimmedTitle)
+            trimmedTitle && props.addTask(trimmedTitle, props.todoListID)
 
         } else {
             setError(true)
@@ -48,14 +51,14 @@ export const TodoList = (props: TodoListPropsType) => {
 
     const taskItem = props.task.length ?
         props.task.map(t => <li key={t.id} className={t.isDone ? "isDone" : ""}>
-            <button onClick={() => props.removeTask(t.id)}>x
+            <button onClick={() => props.removeTask(t.id, props.todoListID)}>x
             </button>
             <input type="checkbox" checked={t.isDone} onChange={(e) => {
-                props.changeTaskStatus(t.id, e.currentTarget.checked)
+                props.changeTaskStatus(t.id, e.currentTarget.checked, props.todoListID)
             }}/>
             <span>{t.title}</span></li>) : <span>Tasks list is empty</span>
 
-    const handlerCreator = (filter: FilterValuesType) => props.changeFilter(filter)
+    const handlerCreator = (filter: FilterValuesType) => props.changeFilter(filter, props.todoListID)
 
     return (
         <div>
