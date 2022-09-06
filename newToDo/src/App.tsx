@@ -59,12 +59,14 @@ function App() {
 
 
     const todoListComponents = todoLists.map(tl => {
-        let tasksForRender;
+        let tasksForRender: Array<TaskType>;
         switch (tl.filter) {
             case 'active':
-                return tasks[tl.id].filter(t => !t.isDone)
+                tasksForRender = tasks[tl.id].filter(t => !t.isDone)
+                break
             case "completed":
-                return tasks[tl.id].filter(t => t.isDone)
+                tasksForRender = tasks[tl.id].filter(t => t.isDone)
+                break
             default:
                 tasksForRender = tasks[tl.id]
         }

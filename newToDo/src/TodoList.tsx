@@ -62,7 +62,12 @@ export const TodoList: FC<TodoListPropsType> = (props) => {
 
     return (
         <div>
-            <h3>{props.title}</h3>
+            <h3>
+                {props.title}
+                <button onClick={() =>
+                    props.removeTodoList(props.todoListID)}>x
+                </button>
+            </h3>
             <div>
                 <input value={title}
                        onChange={changeTitle}
