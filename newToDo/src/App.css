@@ -1,3 +1,4 @@
+/*
 .App {
     padding: 30px;
     display: flex;
@@ -6,6 +7,7 @@
 .App > div {
     margin-right: 50px;
 }
+*/
 
 
 .isDone {
@@ -14,12 +16,13 @@
     text-decoration: line-through;
 }
 
-.bnt-active {
+/*.bnt-active {
     color: #ffffff;
     background-color: #6994ff;
     border: 2px solid #6994ff;
-}
+}*/
 
+/*
 .error {
     border: 2px solid red;
     outline: none;
@@ -27,4 +30,4 @@
 
 .error-message {
     color: red;
-}
+}*/
