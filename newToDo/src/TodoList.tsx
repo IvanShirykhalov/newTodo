@@ -2,7 +2,7 @@ import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
 import {FilterValuesType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Button, Checkbox, IconButton, List, ListItem} from "@material-ui/core";
 import {DeleteOutline} from "@material-ui/icons";
 
 
@@ -39,7 +39,7 @@ export const TodoList: FC<TodoListPropsType> = (props) => {
                 props.changeTaskStatus(t.id, e.currentTarget.checked, props.todoListID)
             }
 
-            return <li key={t.id} className={t.isDone ? "isDone" : ""}>
+            return <ListItem key={t.id} className={t.isDone ? "isDone" : ""} divider>
                 <IconButton onClick={removeTask}
                             size={"small"}
                             color={"secondary"}>
@@ -50,7 +50,7 @@ export const TodoList: FC<TodoListPropsType> = (props) => {
                     checked={t.isDone}
                     onChange={changeTaskStatus}/>
                 <EditableSpan title={t.title} changeTitle={changeTaskTitle}/>
-            </li>
+            </ListItem>
         }) : <span>Tasks list is empty</span>
 
     const addTask = (title: string) => props.addTask(title, props.todoListID)
@@ -68,9 +68,9 @@ export const TodoList: FC<TodoListPropsType> = (props) => {
 
             </h3>
             <AddItemForm AddItem={addTask}/>
-            <ul>
+            <List>
                 {taskItem}
-            </ul>
+            </List>
             <div>
                 <Button
                     size={"small"}
