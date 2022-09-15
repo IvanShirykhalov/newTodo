@@ -1,12 +1,12 @@
 import {FilterValuesType, TodolistType} from "../App";
 import {v1} from "uuid";
 
-export type removeTodoListAT = ReturnType<typeof removeTodolistAC>
+export type removeTodolistAT = ReturnType<typeof removeTodolistAC>
 export type addTodolistAT = ReturnType<typeof addTodolistAC>
 export type changeTodolistFilterAT = ReturnType<typeof changeTodolistFilterAC>
 export type changeTodolistTitleAT = ReturnType<typeof changeTodolistTitleAC>
 
-type ActionType = removeTodoListAT | addTodolistAT | changeTodolistFilterAT | changeTodolistTitleAT
+type ActionType = removeTodolistAT | addTodolistAT | changeTodolistFilterAT | changeTodolistTitleAT
 
 export const todolistsReducer = (state: Array<TodolistType>, action: ActionType) => {
     switch (action.type) {
