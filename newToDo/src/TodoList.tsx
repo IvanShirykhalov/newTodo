@@ -44,21 +44,20 @@ export const TodoList: FC<TodoListPropsType> = memo((props) => {
             break;
     }
 
-    const removeTask = useCallback((taskId: string) => props.removeTask(taskId, props.todoListID),
+/*    const removeTask = useCallback((taskId: string) => props.removeTask(taskId, props.todoListID),
         [props.removeTask, props.todoListID])
     const changeTaskTitle = useCallback((taskId: string, title: string) => props.changeTaskTitle(taskId, title, props.todoListID),
         [props.changeTaskTitle, props.todoListID])
     const changeTaskStatus = useCallback((taskId: string, newTaskStatus: boolean) => {
         props.changeTaskStatus(taskId, newTaskStatus, props.todoListID)
-    }, [props.changeTaskStatus, props.todoListID])
+    }, [props.changeTaskStatus, props.todoListID])*/
 
     const taskItem = props.task.length ?
         tasks.map(t => {
             return (<Task key={t.id}
                           task={t}
-                          removeTask={removeTask}
-                          changeTaskTitle={changeTaskTitle}
-                          changeTaskStatus={changeTaskStatus}/>)
+                          todolistId={props.todoListID}
+                />)
         }) : <span>Tasks list is empty</span>
 
     const addTask = useCallback((title: string) => props.addTask(title, props.todoListID), [props.addTask, props.todoListID])

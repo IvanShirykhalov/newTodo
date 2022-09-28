@@ -3,24 +3,28 @@ import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {DeleteOutline} from "@material-ui/icons";
 import {EditableSpan} from "./EditableSpan";
 import {TaskType} from "./TodoList";
+import {useDispatch} from "react-redux";
+import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./reducers/tasks-reducer";
 
 type TaskPropsType = {
     task: TaskType
-    changeTaskTitle: (taskID: string, title: string) => void
-    removeTask: (taskID: string) => void;
-    changeTaskStatus: (taskID: string, isDone: boolean) => void
+    todolistId: string
 }
 
-export const Task = memo(({task, ...props}: TaskPropsType) => {
-console.log('Task')
-    const removeTask = () => props.removeTask(task.id)
-    const changeTaskTitle = (title: string) => props.changeTaskTitle(task.id, title)
+export const Task = memo(({task,todolistId, ...props}: TaskPropsType) => {
+
+    const {id, isDone, title} = task
+    const dispatch = useDispatch()
+
+    console.log('Task')
+    const removeTask = () => dispatch(removeTaskAC(id, todolistId))
+    const changeTaskTitle = (title: string) => dispatch(changeTaskTitleAC(id, title, todolistId))
     const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-        props.changeTaskStatus(task.id, e.currentTarget.checked)
+        dispatch(changeTaskStatusAC(id, e.currentTarget.checked, todolistId))
     }
 
     return (
-        <ListItem key={task.id} className={task.isDone ? "isDone" : ""} divider>
+        <ListItem key={id} className={isDone ? "isDone" : ""} divider>
             <IconButton onClick={removeTask}
                         size={"small"}
                         color={"secondary"}>
@@ -28,9 +32,9 @@ console.log('Task')
             </IconButton>
             <Checkbox
                 size={"small"}
-                checked={task.isDone}
+                checked={isDone}
                 onChange={changeTaskStatus}/>
-            <EditableSpan title={task.title} changeTitle={changeTaskTitle}/>
+            <EditableSpan title={title} changeTitle={changeTaskTitle}/>
         </ListItem>
     );
 })
