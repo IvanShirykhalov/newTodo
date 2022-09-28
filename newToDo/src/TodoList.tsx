@@ -4,6 +4,7 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, Checkbox, IconButton, List, ListItem} from "@material-ui/core";
 import {DeleteOutline} from "@material-ui/icons";
+import {Task} from "./Task";
 
 
 export type TaskType = {
@@ -31,33 +32,40 @@ type TodoListPropsType = {
 export const TodoList: FC<TodoListPropsType> = memo((props) => {
     console.log('TodoList')
 
+    let tasks = props.task
+    switch (props.filter) {
+        case 'active':
+            tasks = tasks.filter(t => !t.isDone)
+            break;
+        case "completed":
+            tasks = tasks.filter(t => t.isDone)
+            break;
+        default:
+            break;
+    }
+
+    const removeTask = useCallback((taskId: string) => props.removeTask(taskId, props.todoListID),
+        [props.removeTask, props.todoListID])
+    const changeTaskTitle = useCallback((taskId: string, title: string) => props.changeTaskTitle(taskId, title, props.todoListID),
+        [props.changeTaskTitle, props.todoListID])
+    const changeTaskStatus = useCallback((taskId: string, newTaskStatus: boolean) => {
+        props.changeTaskStatus(taskId, newTaskStatus, props.todoListID)
+    }, [props.changeTaskStatus, props.todoListID])
+
     const taskItem = props.task.length ?
-        props.task.map(t => {
-
-            const removeTask = () => props.removeTask(t.id, props.todoListID)
-            const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title, props.todoListID)
-            const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-                props.changeTaskStatus(t.id, e.currentTarget.checked, props.todoListID)
-            }
-
-            return <ListItem key={t.id} className={t.isDone ? "isDone" : ""} divider>
-                <IconButton onClick={removeTask}
-                            size={"small"}
-                            color={"secondary"}>
-                    <DeleteOutline/>
-                </IconButton>
-                <Checkbox
-                    size={"small"}
-                    checked={t.isDone}
-                    onChange={changeTaskStatus}/>
-                <EditableSpan title={t.title} changeTitle={changeTaskTitle}/>
-            </ListItem>
+        tasks.map(t => {
+            return (<Task key={t.id}
+                          task={t}
+                          removeTask={removeTask}
+                          changeTaskTitle={changeTaskTitle}
+                          changeTaskStatus={changeTaskStatus}/>)
         }) : <span>Tasks list is empty</span>
 
     const addTask = useCallback((title: string) => props.addTask(title, props.todoListID), [props.addTask, props.todoListID])
     const removeTodolist = () => props.removeTodoList(props.todoListID)
     const handlerCreator = (filter: FilterValuesType) => props.changeFilter(filter, props.todoListID)
     const changeTodoListTitle = (title: string) => props.changeTodoListTitle(title, props.todoListID)
+
 
     return (
         <div>

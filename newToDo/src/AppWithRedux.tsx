@@ -1,6 +1,5 @@
-import React, {useCallback, useReducer} from 'react';
+import React, {useCallback} from 'react';
 import {TaskType, TodoList} from "./TodoList";
-import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
@@ -9,9 +8,8 @@ import {
     changeTodolistFilterAC,
     changeTodolistTitleAC,
     removeTodolistAC,
-    todolistsReducer
 } from "./reducers/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./reducers/tasks-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./reducers/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
 
@@ -57,7 +55,6 @@ function AppWithRedux() {
         const action = addTodolistAC(title)
         dispatch(action)
     }, [dispatch])
-
     const changeTodoListFilter = useCallback((filter: FilterValuesType, todoListID: string) => {
         dispatch(changeTodolistFilterAC(todoListID, filter))
     }, [dispatch])
@@ -67,18 +64,6 @@ function AppWithRedux() {
 
 
     const todoListComponents = todoLists.map(tl => {
-        let tasksForRender: Array<TaskType>;
-        switch (tl.filter) {
-            case 'active':
-                tasksForRender = tasks[tl.id].filter(t => !t.isDone)
-                break
-            case "completed":
-                tasksForRender = tasks[tl.id].filter(t => t.isDone)
-                break
-            default:
-                tasksForRender = tasks[tl.id]
-        }
-
 
         return (
             <Grid item key={tl.id}>
@@ -87,7 +72,7 @@ function AppWithRedux() {
                         todoListID={tl.id}
                         title={tl.title}
                         filter={tl.filter}
-                        task={tasksForRender}
+                        task={tasks[tl.id]}
                         removeTask={removeTask}
                         changeFilter={changeTodoListFilter}
                         addTask={addTask}
