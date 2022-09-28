@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, FC, memo, useCallback} from 'react';
 import {FilterValuesType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
@@ -28,7 +28,8 @@ type TodoListPropsType = {
     changeTaskTitle: (taskID: string, title: string, todoListID: string) => void
 }
 
-export const TodoList: FC<TodoListPropsType> = (props) => {
+export const TodoList: FC<TodoListPropsType> = memo((props) => {
+    console.log('TodoList')
 
     const taskItem = props.task.length ?
         props.task.map(t => {
@@ -53,7 +54,7 @@ export const TodoList: FC<TodoListPropsType> = (props) => {
             </ListItem>
         }) : <span>Tasks list is empty</span>
 
-    const addTask = (title: string) => props.addTask(title, props.todoListID)
+    const addTask = useCallback((title: string) => props.addTask(title, props.todoListID), [props.addTask, props.todoListID])
     const removeTodolist = () => props.removeTodoList(props.todoListID)
     const handlerCreator = (filter: FilterValuesType) => props.changeFilter(filter, props.todoListID)
     const changeTodoListTitle = (title: string) => props.changeTodoListTitle(title, props.todoListID)
@@ -93,4 +94,4 @@ export const TodoList: FC<TodoListPropsType> = (props) => {
             </div>
         </div>
     );
-};
+})
