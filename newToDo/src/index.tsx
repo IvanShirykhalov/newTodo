@@ -8,7 +8,7 @@ import {lightBlue, purple} from "@material-ui/core/colors";
 import AppWithReducer from "./AppWithReducer";
 import AppWithRedux from "./AppWithRedux";
 import {Provider} from "react-redux";
-import {store} from "./store";
+import {store} from "./store/store";
 
 const theme = createTheme({
     palette: {

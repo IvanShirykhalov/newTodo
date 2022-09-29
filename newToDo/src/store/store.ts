@@ -1,6 +1,6 @@
 import {combineReducers, legacy_createStore} from 'redux';
-import {tasksReducer} from "./reducers/tasks-reducer";
-import {todolistsReducer} from "./reducers/todolists-reducer";
+import {tasksReducer} from "./tasks-reducer";
+import {todolistsReducer} from "./todolists-reducer";
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния

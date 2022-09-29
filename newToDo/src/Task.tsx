@@ -4,7 +4,7 @@ import {DeleteOutline} from "@material-ui/icons";
 import {EditableSpan} from "./EditableSpan";
 import {TaskType} from "./TodoList";
 import {useDispatch} from "react-redux";
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./reducers/tasks-reducer";
+import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
 
 type TaskPropsType = {
     task: TaskType
