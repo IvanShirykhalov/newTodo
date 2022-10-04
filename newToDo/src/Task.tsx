@@ -11,7 +11,7 @@ type TaskPropsType = {
     todolistId: string
 }
 
-export const Task = memo(({task,todolistId, ...props}: TaskPropsType) => {
+export const Task = memo(({task,todolistId}: TaskPropsType) => {
 
     const {id, isDone, title} = task
     const dispatch = useDispatch()
