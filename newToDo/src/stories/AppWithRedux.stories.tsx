@@ -1,20 +1,14 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-
-import { Button } from './Button';
-import {AddItemForm} from "../AddItemForm";
-import {action} from "@storybook/addon-actions";
+import {ComponentStory, ComponentMeta} from '@storybook/react';
 import AppWithRedux from "../AppWithRedux";
-import {Provider} from "react-redux";
-import {store} from "../store/store";
 import {ReduxStoreProviderDecorator} from "../store/ReduxStoreProviderDecorator";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'TodoList/AppWithRedux',
-  component: AppWithRedux,
-  decorators: [ReduxStoreProviderDecorator],
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
+    title: 'TodoList/AppWithRedux',
+    component: AppWithRedux,
+    decorators: [ReduxStoreProviderDecorator],
+    // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 
 } as ComponentMeta<typeof AppWithRedux>;
 
