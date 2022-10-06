@@ -23,6 +23,18 @@ export const todolistAPI = {
     updateTodolist(todolistId: string, title: string) {
         return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title})
     },
+    getTasks(todolistId: string) {
+        return instance.get<GetTasksResponseType>(`todo-lists/${todolistId}/tasks`)
+    },
+    createTasks(todolistId: string, title: string) {
+        return instance.post<ResponseType<{ item: TaskType }>>(`/todo-lists/${todolistId}/tasks`, {title})
+    },
+    deleteTask(todolistId: string, taskId: string) {
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
+    },
+    updateTask(todolistId: string, taskId: string, title: string) {
+        return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`, {title})
+    },
 }
 
 export type ResponseType<D = {}> = {
@@ -37,6 +49,33 @@ type TodolistType = {
     addedDate: string
     order: number
     title: string
+}
+
+export type TaskType = {
+    description: string
+    title: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: string
+    deadline: string
+    id: string
+    todoListId: string
+    order: number
+    addedDate: string
+}
+
+type GetTasksResponseType = {
+    error: string | null
+    totalCount: number
+    items: TaskType[]
+}
+
+type CreateTasksResponseType = {
+    error: string | null
+    totalCount: number
+    resultCode: number
+    items: TaskType[]
 }
 /*type CreateTodolistResponseType = {
     data: {}
