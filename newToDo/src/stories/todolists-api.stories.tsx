@@ -129,7 +129,7 @@ export const CreateTasks = () => {
                 setTitle(e.currentTarget.value)
             }}/>
             <button onClick={createTask}>
-                add task
+                delete task
             </button>
         </div>
     </div>
