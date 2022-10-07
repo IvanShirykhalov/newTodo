@@ -155,7 +155,7 @@ export const DeleteTasks = () => {
                 setTaskId(e.currentTarget.value)
             }}/>
             <button onClick={deleteTask}>
-                add task
+                delete task
             </button>
         </div>
     </div>
