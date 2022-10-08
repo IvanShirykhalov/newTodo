@@ -1,18 +1,19 @@
-import React, {ChangeEvent, FC, memo, useCallback} from 'react';
-import {FilterValuesType} from "./App";
+import React, { FC, memo, useCallback} from 'react';
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, Checkbox, IconButton, List, ListItem} from "@material-ui/core";
+import {Button, IconButton, List} from "@material-ui/core";
 import {DeleteOutline} from "@material-ui/icons";
 import {Task} from "./Task";
+import {TaskStatuses, TaskType} from "./api/todolist-api";
+import {FilterValuesType} from "./store/todolists-reducer";
 
 
-export type TaskType = {
+/*export type TaskType = {
     id: string
     title: string
-    isDone: boolean;
+    status: TaskStatuses;
 
-}
+}*/
 
 
 type TodoListPropsType = {
@@ -23,7 +24,7 @@ type TodoListPropsType = {
     removeTask: (taskID: string, todolistID: string) => void;
     changeFilter: (filter: FilterValuesType, todolistID: string) => void
     addTask: (title: string, todolistID: string) => void
-    changeTaskStatus: (taskID: string, isDone: boolean, todolistID: string) => void
+    changeTaskStatus: (taskID: string, status: TaskStatuses, todolistID: string) => void
     removeTodoList: (todolistID: string) => void
     changeTodoListTitle: (title: string, todoListID: string) => void
     changeTaskTitle: (taskID: string, title: string, todoListID: string) => void
@@ -35,10 +36,10 @@ export const TodoList: FC<TodoListPropsType> = memo((props) => {
     let tasks = props.task
     switch (props.filter) {
         case 'active':
-            tasks = tasks.filter(t => !t.isDone)
+            tasks = tasks.filter(t => t.status === TaskStatuses.New)
             break;
         case "completed":
-            tasks = tasks.filter(t => t.isDone)
+            tasks = tasks.filter(t => t.status === TaskStatuses.Completed)
             break;
         default:
             break;

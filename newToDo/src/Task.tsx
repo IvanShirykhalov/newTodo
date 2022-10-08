@@ -2,29 +2,29 @@ import React, {ChangeEvent, memo} from 'react';
 import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {DeleteOutline} from "@material-ui/icons";
 import {EditableSpan} from "./EditableSpan";
-import {TaskType} from "./TodoList";
 import {useDispatch} from "react-redux";
 import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
+import {TaskStatuses, TaskType} from "./api/todolist-api";
 
 type TaskPropsType = {
     task: TaskType
     todolistId: string
 }
 
-export const Task = memo(({task,todolistId}: TaskPropsType) => {
+export const Task = memo(({task, todolistId, }: TaskPropsType) => {
 
-    const {id, isDone, title} = task
+    const {id, title, status} = task
     const dispatch = useDispatch()
 
-    console.log('Task')
     const removeTask = () => dispatch(removeTaskAC(id, todolistId))
     const changeTaskTitle = (title: string) => dispatch(changeTaskTitleAC(id, title, todolistId))
     const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(changeTaskStatusAC(id, e.currentTarget.checked, todolistId))
+        const newStatus = e.currentTarget.checked
+        dispatch(changeTaskStatusAC(id, newStatus ? TaskStatuses.Completed : TaskStatuses.New, todolistId))
     }
 
     return (
-        <ListItem key={id} className={isDone ? "isDone" : ""} divider>
+        <ListItem key={id} className={status ? "isDone" : ""} divider>
             <IconButton onClick={removeTask}
                         size={"small"}
                         color={"secondary"}>
@@ -32,7 +32,7 @@ export const Task = memo(({task,todolistId}: TaskPropsType) => {
             </IconButton>
             <Checkbox
                 size={"small"}
-                checked={isDone}
+                checked={status === TaskStatuses.Completed}
                 onChange={changeTaskStatus}/>
             <EditableSpan title={title} changeTitle={changeTaskTitle}/>
         </ListItem>
