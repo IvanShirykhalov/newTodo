@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback} from 'react';
+import React, {FC, memo, useCallback, useEffect} from 'react';
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, IconButton, List} from "@material-ui/core";
@@ -6,6 +6,8 @@ import {DeleteOutline} from "@material-ui/icons";
 import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
 import {FilterValuesType} from "./store/todolists-reducer";
+import {useDispatch} from "react-redux";
+import {fetchTasksTC} from "./store/tasks-reducer";
 
 
 /*export type TaskType = {
@@ -31,7 +33,12 @@ type TodoListPropsType = {
 }
 
 export const TodoList: FC<TodoListPropsType> = memo((props) => {
-    console.log('TodoList')
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTasksTC(props.todoListID))
+    }, [])
 
     let tasks = props.task
     switch (props.filter) {
@@ -45,20 +52,20 @@ export const TodoList: FC<TodoListPropsType> = memo((props) => {
             break;
     }
 
-/*    const removeTask = useCallback((taskId: string) => props.removeTask(taskId, props.todoListID),
-        [props.removeTask, props.todoListID])
-    const changeTaskTitle = useCallback((taskId: string, title: string) => props.changeTaskTitle(taskId, title, props.todoListID),
-        [props.changeTaskTitle, props.todoListID])
-    const changeTaskStatus = useCallback((taskId: string, newTaskStatus: boolean) => {
-        props.changeTaskStatus(taskId, newTaskStatus, props.todoListID)
-    }, [props.changeTaskStatus, props.todoListID])*/
+    /*    const removeTask = useCallback((taskId: string) => props.removeTask(taskId, props.todoListID),
+            [props.removeTask, props.todoListID])
+        const changeTaskTitle = useCallback((taskId: string, title: string) => props.changeTaskTitle(taskId, title, props.todoListID),
+            [props.changeTaskTitle, props.todoListID])
+        const changeTaskStatus = useCallback((taskId: string, newTaskStatus: boolean) => {
+            props.changeTaskStatus(taskId, newTaskStatus, props.todoListID)
+        }, [props.changeTaskStatus, props.todoListID])*/
 
     const taskItem = props.task.length ?
         tasks.map(t => {
             return (<Task key={t.id}
                           task={t}
                           todolistId={props.todoListID}
-                />)
+            />)
         }) : <span>Tasks list is empty</span>
 
     const addTask = useCallback((title: string) => props.addTask(title, props.todoListID), [props.addTask, props.todoListID])

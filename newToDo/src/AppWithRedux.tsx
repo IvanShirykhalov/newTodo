@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {TodoList} from "./TodoList";
 import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
@@ -6,7 +6,7 @@ import {Menu} from "@material-ui/icons";
 import {
     addTodolistAC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC, FilterValuesType,
+    changeTodolistTitleAC, fetchTodolist, FilterValuesType,
     removeTodolistAC, TodolistDomainType,
 } from "./store/todolists-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
@@ -25,6 +25,10 @@ function AppWithRedux() {
     let tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTodolist)
+    }, [])
 
 
     const addTask = useCallback((title: string, todolistId: string) => {
