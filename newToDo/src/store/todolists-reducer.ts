@@ -1,6 +1,7 @@
 import {v1} from "uuid";
 import {todolistAPI, TodolistType} from "../api/todolist-api";
 import {Dispatch} from "redux";
+import {AppActionsType, AppThunk} from "./store";
 
 export type removeTodolistAT = ReturnType<typeof removeTodolistAC>
 export type addTodolistAT = ReturnType<typeof addTodolistAC>
@@ -8,7 +9,12 @@ export type changeTodolistFilterAT = ReturnType<typeof changeTodolistFilterAC>
 export type changeTodolistTitleAT = ReturnType<typeof changeTodolistTitleAC>
 export type fetchTodolistAT = ReturnType<typeof fetchTodolistAC>
 
-type ActionType = removeTodolistAT | addTodolistAT | changeTodolistFilterAT | changeTodolistTitleAT | fetchTodolistAT
+export type TodoListActionType =
+    removeTodolistAT
+    | addTodolistAT
+    | changeTodolistFilterAT
+    | changeTodolistTitleAT
+    | fetchTodolistAT
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 export type TodolistDomainType = TodolistType & {
@@ -17,7 +23,7 @@ export type TodolistDomainType = TodolistType & {
 
 const initialState: Array<TodolistDomainType> = []
 
-export const todolistsReducer = (state = initialState, action: ActionType): Array<TodolistDomainType> => {
+export const todolistsReducer = (state = initialState, action: TodoListActionType): Array<TodolistDomainType> => {
     switch (action.type) {
         case "REMOVE-TODOLIST":
             return state.filter(tl => tl.id !== action.id)
@@ -56,7 +62,7 @@ export const fetchTodolistAC = (todos: TodolistType[]) => {
     return {type: "SET-TODOLISTS", todos} as const
 }
 
-export const fetchTodolist = (dispatch: Dispatch) => {
+export const fetchTodolist = (): AppThunk => (dispatch) => {
     todolistAPI.getTodolists()
         .then((res) => {
             dispatch(fetchTodolistAC(res.data))
