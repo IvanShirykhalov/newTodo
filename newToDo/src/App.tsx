@@ -8,6 +8,8 @@ import {Menu} from "@material-ui/icons";
 import {TaskPriorities, TaskStatuses, TaskType} from "./api/todolist-api";
 import {FilterValuesType, TodolistDomainType} from "./store/todolists-reducer";
 
+
+
 export type TasksStateType = {
     [todolist_ID: string]: Array<TaskType>
 }

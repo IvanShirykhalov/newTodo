@@ -9,7 +9,14 @@ import {
     changeTodolistTitleAC, fetchTodolist, FilterValuesType,
     removeTodolistAC, TodolistDomainType,
 } from "./store/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
+import {
+    addTaskAC,
+    changeTaskStatusAC,
+    changeTaskTitleAC, createTaskTC,
+    removeTaskAC,
+    removeTaskTC,
+    updateTaskStatusTC, updateTaskTitleTC
+} from "./store/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/store";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
@@ -27,21 +34,21 @@ function AppWithRedux() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(fetchTodolist)
-    }, [])
+        dispatch(fetchTodolist())
+    }, [dispatch])
 
 
     const addTask = useCallback((title: string, todolistId: string) => {
-        dispatch(addTaskAC(title, todolistId))
+        dispatch(createTaskTC(todolistId, title))
     }, [dispatch])
     const changeTaskStatus = useCallback((taskID: string, status: TaskStatuses, todoListID: string) => {
-        dispatch(changeTaskStatusAC(taskID, status, todoListID))
+        dispatch(updateTaskStatusTC(task_ID, todoListID, status))
     }, [dispatch])
     const changeTaskTitle = useCallback((taskID: string, title: string, todoListID: string) => {
-        dispatch(changeTaskTitleAC(taskID, title, todoListID))
+        dispatch(updateTaskTitleTC(taskID, todoListID, title))
     }, [dispatch])
     const removeTask = useCallback((task_ID: string, todoListID: string) => {
-        dispatch(removeTaskAC(task_ID, todoListID))
+        dispatch(removeTaskTC(task_ID, todoListID))
     }, [dispatch])
 
 

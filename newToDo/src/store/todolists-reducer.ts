@@ -62,7 +62,7 @@ export const fetchTodolistAC = (todos: TodolistType[]) => {
     return {type: "SET-TODOLISTS", todos} as const
 }
 
-export const fetchTodolist = (): AppThunk => (dispatch) => {
+export const fetchTodolist = () => (dispatch: any) => {
     todolistAPI.getTodolists()
         .then((res) => {
             dispatch(fetchTodolistAC(res.data))
