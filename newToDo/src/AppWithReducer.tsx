@@ -11,7 +11,7 @@ import {
     removeTodolistAC,
     todolistsReducer
 } from "./store/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./store/tasks-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskAC, removeTaskAC, tasksReducer} from "./store/tasks-reducer";
 import {TaskPriorities, TaskStatuses, TaskType} from "./api/todolist-api";
 
 
@@ -115,7 +115,7 @@ function AppWithReducer() {
         dispatchToTasks(changeTaskStatusAC(taskID, status, todoListID))
     }
     const changeTaskTitle = (taskID: string, title: string, todoListID: string) => {
-        dispatchToTasks(changeTaskTitleAC(taskID, title, todoListID))
+        dispatchToTasks(changeTaskAC(taskID, title, todoListID))
     }
     const removeTask = (task_ID: string, todoListID: string) => {
         dispatchToTasks(removeTaskAC(task_ID, todoListID))

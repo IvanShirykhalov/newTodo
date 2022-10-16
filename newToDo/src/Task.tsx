@@ -3,7 +3,7 @@ import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {DeleteOutline} from "@material-ui/icons";
 import {EditableSpan} from "./EditableSpan";
 import {useDispatch} from "react-redux";
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
+import {changeTaskStatusAC, changeTaskAC, removeTaskAC} from "./store/tasks-reducer";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
 
 type TaskPropsType = {
@@ -17,7 +17,7 @@ export const Task = memo(({task, todolistId, }: TaskPropsType) => {
     const dispatch = useDispatch()
 
     const removeTask = () => dispatch(removeTaskAC(id, todolistId))
-    const changeTaskTitle = (title: string) => dispatch(changeTaskTitleAC(id, title, todolistId))
+    const changeTaskTitle = (title: string) => dispatch(changeTaskAC(id, title, todolistId))
     const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
         const newStatus = e.currentTarget.checked
         dispatch(changeTaskStatusAC(id, newStatus ? TaskStatuses.Completed : TaskStatuses.New, todolistId))
