@@ -13,25 +13,9 @@ const rootReducer = combineReducers({
 export const store = createStore(rootReducer, applyMiddleware(thunk));
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<typeof rootReducer>
-
 export type AppActionsType = TodoListActionType | TasksActionType
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsType>
-
 // а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore
 window.store = store;
-
-/*
-import {configureStore} from "@reduxjs/toolkit";
-
-
-
-export const store = configureStore({
-    reducer: {
-        todos: todosReducer
-    }
-})
-
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch*/

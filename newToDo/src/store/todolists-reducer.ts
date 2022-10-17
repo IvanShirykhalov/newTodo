@@ -42,6 +42,8 @@ export const todolistsReducer = (state = initialState, action: TodoListActionTyp
     }
 }
 
+
+//AC
 export const removeTodolistAC = (id: string) => {
     return {type: "REMOVE-TODOLIST", id} as const
 }
@@ -62,9 +64,22 @@ export const fetchTodolistAC = (todos: TodolistType[]) => {
     return {type: "SET-TODOLISTS", todos} as const
 }
 
-export const fetchTodolist = () => (dispatch: any) => {
+
+//TC
+export const fetchTodolist = (dispatch: any) => {
     todolistAPI.getTodolists()
         .then((res) => {
             dispatch(fetchTodolistAC(res.data))
+        })
+}
+export const removeTodolistTC = (id: string) => (dispatch: Dispatch) => {
+    todolistAPI.deleteTodolist(id).then((res) => {
+        dispatch(removeTodolistAC(id))
+    })
+}
+export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {
+    todolistAPI.createTodolist(title)
+        .then((res) => {
+            dispatch(addTodolistAC(title))
         })
 }
