@@ -1,7 +1,7 @@
-import {TasksStateType} from "../App";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./tasks-reducer";
 import {addTodolistAC} from "./todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/todolist-api";
+import {TasksStateType} from "../AppWithRedux";
 
 let startState: TasksStateType
 
@@ -119,7 +119,8 @@ test('correct task should be deleted from correct array', () => {
             }
         ],
         "todolistId2": [
-            {id: "1", title: "bread",
+            {
+                id: "1", title: "bread",
                 status: TaskStatuses.New,
                 todoListId: "todolistId2",
                 startDate: '',
@@ -127,8 +128,10 @@ test('correct task should be deleted from correct array', () => {
                 deadline: '',
                 order: 0,
                 priority: TaskPriorities.Low,
-                description: ''},
-            {id: "3", title: "tea",
+                description: ''
+            },
+            {
+                id: "3", title: "tea",
                 status: TaskStatuses.New,
                 todoListId: "todolistId2",
                 startDate: '',
@@ -136,20 +139,32 @@ test('correct task should be deleted from correct array', () => {
                 deadline: '',
                 order: 0,
                 priority: TaskPriorities.Low,
-                description: ''}
+                description: ''
+            }
         ]
     })
 })
 
 test('correct task should be added to correct array', () => {
-    const action = addTaskAC("juce", "todolistId2");
+    const action = addTaskAC({
+        todoListId: "todolistId2",
+        startDate: '',
+        order: 0,
+        priority: TaskPriorities.Low,
+        description: '',
+        deadline: '',
+        addedDate: '',
+        title: 'juice',
+        status: TaskStatuses.New,
+        id: '4'
+    });
 
     const endState = tasksReducer(startState, action)
 
     expect(endState["todolistId1"].length).toBe(3);
     expect(endState["todolistId2"].length).toBe(4);
     expect(endState["todolistId2"][0].id).toBeDefined();
-    expect(endState["todolistId2"][0].title).toBe("juce");
+    expect(endState["todolistId2"][0].title).toBe("juice");
     expect(endState["todolistId2"][0].status).toBe(TaskStatuses.New);
 })
 
