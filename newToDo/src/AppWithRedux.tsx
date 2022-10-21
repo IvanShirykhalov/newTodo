@@ -6,7 +6,7 @@ import {Menu} from "@material-ui/icons";
 import {
     addTodolistAC, addTodolistTC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC, fetchTodolist, FilterValuesType,
+    changeTodolistTitleAC, changeTodolistTitleTC, fetchTodolist, FilterValuesType,
     removeTodolistAC, removeTodolistTC, TodolistDomainType,
 } from "./store/todolists-reducer";
 import {
@@ -18,7 +18,7 @@ import {
     updateTaskStatusTC, updateTaskTitleTC
 } from "./store/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./store/store";
+import {AppRootStateType, useAppDispatch} from "./store/store";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
 
 
@@ -31,10 +31,10 @@ function AppWithRedux() {
     let todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     let tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(fetchTodolist())
+        dispatch(fetchTodolist)
     }, [dispatch])
 
 
@@ -62,7 +62,7 @@ function AppWithRedux() {
         dispatch(changeTodolistFilterAC(todoListID, filter))
     }, [dispatch])
     const changeTodoListTitle = useCallback((title: string, todoListID: string) => {
-        dispatch(changeTodolistTitleAC(todoListID, title))
+        dispatch(changeTodolistTitleTC(todoListID, title))
     }, [dispatch])
 
 
