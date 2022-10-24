@@ -4,20 +4,17 @@ import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
-    addTodolistAC, addTodolistTC,
+    addTodolistTC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC, changeTodolistTitleTC, fetchTodolist, FilterValuesType,
-    removeTodolistAC, removeTodolistTC, TodolistDomainType,
+    changeTodolistTitleTC, fetchTodolist, FilterValuesType,
+    removeTodolistTC, TodolistDomainType,
 } from "./store/todolists-reducer";
 import {
-    addTaskAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC, createTaskTC,
-    removeTaskAC,
+    createTaskTC,
     removeTaskTC,
-    updateTaskStatusTC, updateTaskTitleTC
+    updateTaskStatusTC, updateTaskTC, updateTaskTitleTC
 } from "./store/tasks-reducer";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "./store/store";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
 
@@ -42,13 +39,13 @@ function AppWithRedux() {
         dispatch(createTaskTC(todolistId, title))
     }, [dispatch])
     const changeTaskStatus = useCallback((taskID: string, status: TaskStatuses, todoListID: string) => {
-        dispatch(updateTaskStatusTC(taskID, todoListID, status))
+        dispatch(updateTaskTC(taskID, {status}, todoListID))
     }, [dispatch])
     const changeTaskTitle = useCallback((taskID: string, title: string, todoListID: string) => {
-        dispatch(updateTaskTitleTC(taskID, todoListID, title))
+        dispatch(updateTaskTC(taskID, {title}, todoListID))
     }, [dispatch])
-    const removeTask = useCallback((taskID: string, todoListID: string) => {
-        dispatch(removeTaskTC(taskID, todoListID))
+    const removeTask = useCallback((taskId: string, todoListId: string) => {
+        dispatch(removeTaskTC(todoListId, taskId))
     }, [dispatch])
 
 
@@ -72,7 +69,7 @@ function AppWithRedux() {
             <Grid item key={tl.id}>
                 <Paper variant={"outlined"} style={{padding: "20px"}}>
                     <TodoList
-                        todoListID={tl.id}
+                        todoListId={tl.id}
                         title={tl.title}
                         filter={tl.filter}
                         task={tasks[tl.id]}
