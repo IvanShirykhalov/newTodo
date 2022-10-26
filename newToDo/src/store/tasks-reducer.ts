@@ -149,8 +149,7 @@ export const createTaskTC = (todolistId: string, title: string) => (dispatch: Di
 
 }
 
-
-export const updateTaskStatusTC = (taskID: string, todolistId: string, status: TaskStatuses) => (dispatch: Dispatch<AppActionsType>, getState: () => AppRootStateType) => {
+/*export const updateTaskStatusTC = (taskID: string, todolistId: string, status: TaskStatuses) => (dispatch: Dispatch<AppActionsType>, getState: () => AppRootStateType) => {
     const task = getState().tasks[todolistId].find(t => t.id === taskID)
     if (task) {
         const model: UpdateTaskModelType = {
@@ -166,9 +165,8 @@ export const updateTaskStatusTC = (taskID: string, todolistId: string, status: T
                 dispatch(changeTaskStatusAC(taskID, status, todolistId))
             })
     }
-}
-
-export const updateTaskTitleTC = (taskID: string, todolistId: string, title: string) => (dispatch: Dispatch<AppActionsType>, getState: () => AppRootStateType) => {
+}*/
+/*export const updateTaskTitleTC = (taskID: string, todolistId: string, title: string) => (dispatch: Dispatch<AppActionsType>, getState: () => AppRootStateType) => {
     const task = getState().tasks[todolistId].find(t => t.id === taskID)
     if (task) {
         const model: UpdateTaskModelType = {
@@ -184,7 +182,7 @@ export const updateTaskTitleTC = (taskID: string, todolistId: string, title: str
                 dispatch(changeTaskTitleAC(taskID, title, todolistId))
             })
     }
-}
+}*/
 
 export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string) =>
     (dispatch: Dispatch<AppActionsType>, getState: () => AppRootStateType) => {

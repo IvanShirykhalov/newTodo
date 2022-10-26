@@ -1,5 +1,4 @@
 import axios from 'axios'
-import {UpdateDomainTaskModelType} from "../store/tasks-reducer";
 
 
 const instance = axios.create({
