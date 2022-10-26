@@ -6,6 +6,7 @@ import {tasksReducer} from "./tasks-reducer";
 import {todolistsReducer} from "./todolists-reducer";
 import {v1} from "uuid";
 import {TaskPriorities, TaskStatuses} from "../api/todolist-api";
+import {RequestStatusType} from "../app-reducer";
 
 
 const rootReducer = combineReducers({
@@ -67,7 +68,11 @@ const initialGlobalState: AppRootStateType = {
                 description: ''
             }
         ]
-    }
+    },
+    app: {
+        status: 'loading'
+    },
+
 };
 
 export const storyBookStore = legacy_createStore(rootReducer, initialGlobalState);

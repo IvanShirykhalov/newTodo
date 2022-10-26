@@ -3,6 +3,7 @@ import {TaskPriorities, TaskStatuses, TaskType, todolistAPI, UpdateTaskModelType
 import {Dispatch} from "redux";
 import {AppActionsType, AppRootStateType} from "./store";
 import {TasksStateType} from "../AppWithRedux";
+import {setAppStatusAC} from "../app-reducer";
 
 
 export type removeTaskAT = ReturnType<typeof removeTaskAC>
@@ -128,23 +129,29 @@ export const updateTaskAC = (taskId: string, model: UpdateDomainTaskModelType, t
 
 
 export const fetchTasksTC = (todoId: string) => (dispatch: Dispatch<AppActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.getTasks(todoId)
         .then((res) => {
             dispatch(setTasksAC(todoId, res.data.items))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 
 export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch<AppActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.deleteTask(todolistId, taskId)
         .then(() => {
             dispatch(removeTaskAC(todolistId, taskId))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 
 export const createTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch<AppActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.createTasks(todolistId, title)
         .then((res) => {
             dispatch(addTaskAC(res.data.data.item))
+            dispatch(setAppStatusAC('succeeded'))
         })
 
 }
@@ -203,10 +210,10 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
             status: task.status,
             ...domainModel
         }
-
+        dispatch(setAppStatusAC('loading'))
         todolistAPI.updateTask(todolistId, taskId, apiModel)
             .then(() => {
-                const action = updateTaskAC(taskId, domainModel, todolistId)
-                dispatch(action)
+                dispatch(updateTaskAC(taskId, domainModel, todolistId))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
