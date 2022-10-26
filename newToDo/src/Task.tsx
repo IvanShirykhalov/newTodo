@@ -1,10 +1,10 @@
 import React, {ChangeEvent, memo} from 'react';
-import {Checkbox, IconButton, ListItem} from "@material-ui/core";
-import {DeleteOutline} from "@material-ui/icons";
 import {EditableSpan} from "./EditableSpan";
 import {removeTaskTC, updateTaskTC} from "./store/tasks-reducer";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
 import {useAppDispatch} from "./store/store";
+import {Checkbox, IconButton, ListItem} from "@mui/material";
+import { DeleteOutline } from '@mui/icons-material';
 
 type TaskPropsType = {
     task: TaskType

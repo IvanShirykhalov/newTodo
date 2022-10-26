@@ -2,11 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import {createTheme, CssBaseline, ThemeProvider} from "@material-ui/core";
-import {lightBlue, purple} from "@material-ui/core/colors";
+
 import AppWithRedux from "./AppWithRedux";
 import {Provider} from "react-redux";
 import {store} from "./store/store";
+import {lightBlue, purple} from "@mui/material/colors";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+
 
 const theme = createTheme({
     palette: {

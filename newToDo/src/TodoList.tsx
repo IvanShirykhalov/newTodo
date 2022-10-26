@@ -1,13 +1,13 @@
 import React, {FC, memo, useCallback, useEffect} from 'react';
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, IconButton, List} from "@material-ui/core";
-import {DeleteOutline} from "@material-ui/icons";
 import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
 import {FilterValuesType} from "./store/todolists-reducer";
 import {fetchTasksTC} from "./store/tasks-reducer";
 import {useAppDispatch} from "./store/store";
+import {Button, IconButton, List} from "@mui/material";
+import {DeleteOutline} from "@mui/icons-material";
 
 type TodoListPropsType = {
     todoListId: string

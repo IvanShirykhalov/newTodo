@@ -2,18 +2,6 @@ import React, {useCallback, useEffect} from 'react';
 import {TodoList} from "./TodoList";
 import {AddItemForm} from "./AddItemForm";
 import {
-    AppBar,
-    Button,
-    Container,
-    Grid,
-    IconButton,
-    LinearProgress,
-    Paper,
-    Toolbar,
-    Typography
-} from "@material-ui/core";
-import {Menu} from "@material-ui/icons";
-import {
     addTodolistTC,
     changeTodolistFilterAC,
     changeTodolistTitleTC, fetchTodolist, FilterValuesType,
@@ -26,6 +14,20 @@ import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "./store/store";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
 import {RequestStatusType} from "./app-reducer";
+/*import {ErrorSnackbar} from "./ErrorSnackbar";*/
+import {
+    AppBar,
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    LinearProgress,
+    Paper,
+    Toolbar,
+    Typography
+} from "@mui/material";
+import {Menu} from "@mui/icons-material";
+
 
 
 export type TasksStateType = {
@@ -98,6 +100,7 @@ function AppWithRedux() {
 
     return (
         <div className={"App"}>
+            {/*   <ErrorSnackbar/>*/}
             <AppBar position={"static"}>
                 <Toolbar style={{justifyContent: "space-between"}}>
                     <IconButton edge={"start"} color={"inherit"} arial-label={"menu"}>
