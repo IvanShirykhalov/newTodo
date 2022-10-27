@@ -2,7 +2,7 @@ import {v1} from "uuid";
 import {todolistAPI, TodolistType} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppActionsType} from "./store";
-import {setAppStatusAC} from "../app-reducer";
+import {setAppErrorAC, setAppErrorAT, setAppStatusAC} from "../app-reducer";
 
 export type removeTodolistAT = ReturnType<typeof removeTodolistAC>
 export type addTodolistAT = ReturnType<typeof addTodolistAC>
@@ -16,6 +16,7 @@ export type TodoListActionType =
     | changeTodolistFilterAT
     | changeTodolistTitleAT
     | fetchTodolistAT
+    | setAppErrorAT
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 export type TodolistDomainType = TodolistType & {
@@ -82,9 +83,13 @@ export const removeTodolistTC = (id: string) => (dispatch: Dispatch<AppActionsTy
 export const addTodolistTC = (title: string) => (dispatch: Dispatch<AppActionsType>) => {
     dispatch(setAppStatusAC('loading'))
     todolistAPI.createTodolist(title)
-        .then(() => {
-            dispatch(addTodolistAC(title))
-            dispatch(setAppStatusAC('succeeded'))
+        .then((res) => {
+            if (res.data.resultCode === 0) {
+                dispatch(addTodolistAC(title))
+                dispatch(setAppStatusAC('succeeded'))
+            } else {
+                dispatch(setAppErrorAC(res.data.messages[0]))
+            }
         })
 }
 

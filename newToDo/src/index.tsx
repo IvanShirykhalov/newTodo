@@ -7,14 +7,15 @@ import AppWithRedux from "./AppWithRedux";
 import {Provider} from "react-redux";
 import {store} from "./store/store";
 import {lightBlue, purple} from "@mui/material/colors";
-import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import {CssBaseline, ThemeProvider} from "@mui/material";
+import {createTheme} from '@mui/material/styles';
 
 
 const theme = createTheme({
     palette: {
         primary: purple,
         secondary: lightBlue,
-        type: "dark"
+        /*        type: "dark"*/
     }
 }) /*Изменение стиля mui*/
 
@@ -25,10 +26,6 @@ ReactDOM.render(
             <AppWithRedux/>
         </Provider>
     </ThemeProvider>
-
     , document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();

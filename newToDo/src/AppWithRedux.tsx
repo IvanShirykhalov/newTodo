@@ -14,7 +14,7 @@ import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "./store/store";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
 import {RequestStatusType} from "./app-reducer";
-/*import {ErrorSnackbar} from "./ErrorSnackbar";*/
+
 import {
     AppBar,
     Button,
@@ -27,7 +27,7 @@ import {
     Typography
 } from "@mui/material";
 import {Menu} from "@mui/icons-material";
-
+import {ErrorSnackbar} from "./ErrorSnackbar";
 
 
 export type TasksStateType = {
@@ -100,7 +100,7 @@ function AppWithRedux() {
 
     return (
         <div className={"App"}>
-            {/*   <ErrorSnackbar/>*/}
+            <ErrorSnackbar/>
             <AppBar position={"static"}>
                 <Toolbar style={{justifyContent: "space-between"}}>
                     <IconButton edge={"start"} color={"inherit"} arial-label={"menu"}>
