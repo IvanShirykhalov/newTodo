@@ -2,13 +2,14 @@ import {v1} from "uuid";
 import {todolistAPI, TodolistType} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppActionsType} from "./store";
-import {setAppErrorAC, setAppErrorAT, setAppStatusAC} from "../app-reducer";
+import {RequestStatusType, setAppErrorAC, setAppErrorAT, setAppStatusAC} from "../app-reducer";
 
 export type removeTodolistAT = ReturnType<typeof removeTodolistAC>
 export type addTodolistAT = ReturnType<typeof addTodolistAC>
 export type changeTodolistFilterAT = ReturnType<typeof changeTodolistFilterAC>
 export type changeTodolistTitleAT = ReturnType<typeof changeTodolistTitleAC>
 export type fetchTodolistAT = ReturnType<typeof fetchTodolistAC>
+export type changeTodolistEntityStatusAT = ReturnType<typeof changeTodolistEntityStatusAC>
 
 export type TodoListActionType =
     removeTodolistAT
@@ -17,10 +18,12 @@ export type TodoListActionType =
     | changeTodolistTitleAT
     | fetchTodolistAT
     | setAppErrorAT
+    | changeTodolistEntityStatusAT
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 export type TodolistDomainType = TodolistType & {
     filter: FilterValuesType
+    entityStatus: RequestStatusType
 }
 
 const initialState: Array<TodolistDomainType> = []
@@ -30,15 +33,15 @@ export const todolistsReducer = (state = initialState, action: TodoListActionTyp
         case "REMOVE-TODOLIST":
             return state.filter(tl => tl.id !== action.id)
         case "ADD-TODOLIST":
-            return [...state, {
-                id: action.todolistId, title: action.title, filter: "all", addedDate: '', order: 0
-            }]
+            return [{...action.todolist, filter: 'all', entityStatus: "idle"}, ...state]
         case "CHANGE-TODOLIST-TITLE":
             return state.map(tl => tl.id !== action.id ? tl : {...tl, title: action.title})
         case "CHANGE-TODOLIST-FILTER":
             return state.map(tl => tl.id !== action.id ? tl : {...tl, filter: action.filter})
         case "SET-TODOLISTS":
-            return action.todos.map(tl => ({...tl, filter: 'all'}))
+            return action.todos.map(tl => ({...tl, filter: 'all', entityStatus: "idle"}))
+        case "CHANGE-TODOLIST-ENTITY-STATUS" :
+            return state.map(tl => tl.id === action.id ? {...tl, entityStatus: action.entityStatus} : tl)
         default:
             return state
     }
@@ -49,8 +52,8 @@ export const todolistsReducer = (state = initialState, action: TodoListActionTyp
 export const removeTodolistAC = (id: string) => {
     return {type: "REMOVE-TODOLIST", id} as const
 }
-export const addTodolistAC = (title: string) => {
-    return {type: "ADD-TODOLIST", title, todolistId: v1()} as const
+export const addTodolistAC = (todolist: TodolistType) => {
+    return {type: "ADD-TODOLIST", todolist} as const
 }
 export const changeTodolistFilterAC = (id: string, filter: FilterValuesType) => {
     return {type: "CHANGE-TODOLIST-FILTER", id, filter} as const
@@ -60,6 +63,9 @@ export const changeTodolistTitleAC = (id: string, title: string) => {
 }
 export const fetchTodolistAC = (todos: TodolistType[]) => {
     return {type: "SET-TODOLISTS", todos} as const
+}
+export const changeTodolistEntityStatusAC = (id: string, entityStatus: RequestStatusType) => {
+    return {type: "CHANGE-TODOLIST-ENTITY-STATUS", id, entityStatus} as const
 }
 
 
@@ -74,6 +80,7 @@ export const fetchTodolist = (dispatch: Dispatch<AppActionsType>) => {
 }
 export const removeTodolistTC = (id: string) => (dispatch: Dispatch<AppActionsType>) => {
     dispatch(setAppStatusAC('loading'))
+    dispatch(changeTodolistEntityStatusAC(id, 'loading'))
     todolistAPI.deleteTodolist(id).then(() => {
         dispatch(removeTodolistAC(id))
         dispatch(setAppStatusAC('succeeded'))
@@ -85,10 +92,15 @@ export const addTodolistTC = (title: string) => (dispatch: Dispatch<AppActionsTy
     todolistAPI.createTodolist(title)
         .then((res) => {
             if (res.data.resultCode === 0) {
-                dispatch(addTodolistAC(title))
+                dispatch(addTodolistAC(res.data.data.item))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-                dispatch(setAppErrorAC(res.data.messages[0]))
+                if (res.data.messages[0]) {
+                    dispatch(setAppErrorAC(res.data.messages[0]))
+                } else {
+                    dispatch(setAppErrorAC('some error'))
+                }
+                dispatch(setAppStatusAC('failed'))
             }
         })
 }

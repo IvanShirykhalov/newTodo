@@ -16,8 +16,8 @@ beforeEach(() => {
     todolistId2 = v1()
 
     startState = [
-        {id: todolistId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-        {id: todolistId2, title: 'What to buy', filter: 'all', addedDate: '', order: 0}
+        {id: todolistId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: "idle"},
+        {id: todolistId2, title: 'What to buy', filter: 'all', addedDate: '', order: 0, entityStatus: "idle"}
     ]
 })
 
@@ -32,10 +32,10 @@ test('correct todolist should be remove', () => {
 test('correct todolist should be added', () => {
     let newTodolistTitle = 'New Todolist'
 
-    const endState = todolistsReducer(startState, addTodolistAC(newTodolistTitle))
+    const endState = todolistsReducer(startState, addTodolistAC({title: newTodolistTitle, addedDate: '', order: 0, id :v1()}))
 
     expect(endState.length).toBe(3)
-    expect(endState[2].title).toBe('New Todolist')
+    expect(endState[0].title).toBe('New Todolist')
 })
 
 test('correct filter of todolist should be changed', () => {

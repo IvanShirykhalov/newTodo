@@ -8,10 +8,12 @@ import {fetchTasksTC} from "./store/tasks-reducer";
 import {useAppDispatch} from "./store/store";
 import {Button, IconButton, List} from "@mui/material";
 import {DeleteOutline} from "@mui/icons-material";
+import {RequestStatusType} from "./app-reducer";
 
 type TodoListPropsType = {
     todoListId: string
     title: string
+    entityStatus: RequestStatusType
     task: TaskType[];
     filter: FilterValuesType
     removeTask: (todolistID: string, taskID: string) => void;
@@ -60,7 +62,7 @@ export const TodoList: FC<TodoListPropsType> = memo((props) => {
     return (
         <div>
             <h3>
-                <IconButton onClick={removeTodolist} color={"secondary"}>
+                <IconButton onClick={removeTodolist} color={"secondary"} disabled={props.entityStatus === 'loading'}>
                     <DeleteOutline/>
                 </IconButton>
                 <EditableSpan title={props.title} changeTitle={changeTodoListTitle}/>

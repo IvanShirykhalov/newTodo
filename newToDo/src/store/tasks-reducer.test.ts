@@ -2,6 +2,7 @@ import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksRed
 import {addTodolistAC} from "./todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/todolist-api";
 import {TasksStateType} from "../AppWithRedux";
+import {v1} from "uuid";
 
 let startState: TasksStateType
 
@@ -9,7 +10,8 @@ beforeEach(() => {
     startState = {
         "todolistId1": [
             {
-                id: "1", title: "CSS",
+                id: "1",
+                title: "CSS",
                 status: TaskStatuses.New,
                 todoListId: "todolistId1",
                 startDate: '',
@@ -17,10 +19,12 @@ beforeEach(() => {
                 deadline: '',
                 order: 0,
                 priority: TaskPriorities.Low,
-                description: ''
+                description: '',
+
             },
             {
-                id: "2", title: "JS",
+                id: "2",
+                title: "JS",
                 status: TaskStatuses.Completed,
                 todoListId: "todolistId1",
                 startDate: '',
@@ -31,7 +35,8 @@ beforeEach(() => {
                 description: ''
             },
             {
-                id: "3", title: "React",
+                id: "3",
+                title: "React",
                 status: TaskStatuses.New,
                 todoListId: "todolistId1",
                 startDate: '',
@@ -44,7 +49,8 @@ beforeEach(() => {
         ],
         "todolistId2": [
             {
-                id: "1", title: "bread",
+                id: "1",
+                title: "bread",
                 status: TaskStatuses.New,
                 todoListId: "todolistId2",
                 startDate: '',
@@ -55,7 +61,8 @@ beforeEach(() => {
                 description: ''
             },
             {
-                id: "2", title: "milk",
+                id: "2",
+                title: "milk",
                 status: TaskStatuses.Completed,
                 todoListId: "todolistId2",
                 startDate: '',
@@ -66,7 +73,8 @@ beforeEach(() => {
                 description: ''
             },
             {
-                id: "3", title: "tea",
+                id: "3",
+                title: "tea",
                 status: TaskStatuses.New,
                 todoListId: "todolistId2",
                 startDate: '',
@@ -81,7 +89,7 @@ beforeEach(() => {
 })
 
 test('correct task should be deleted from correct array', () => {
-    const action = removeTaskAC("2", "todolistId2");
+    const action = removeTaskAC("todolistId2", "2");
 
     const endState = tasksReducer(startState, action)
 
@@ -187,7 +195,7 @@ test('title of specified task should be changed', () => {
 });
 
 test('new array should be added when new todolist is added', () => {
-    const action = addTodolistAC("new todolist");
+    const action = addTodolistAC({id: v1(), title: "new todolist", order: 0, addedDate: ''});
 
     const endState = tasksReducer(startState, action)
 
