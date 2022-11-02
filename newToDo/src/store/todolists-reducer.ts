@@ -1,8 +1,10 @@
 import {v1} from "uuid";
-import {todolistAPI, TodolistType} from "../api/todolist-api";
+import {TaskType, todolistAPI, TodolistType} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppActionsType} from "./store";
 import {RequestStatusType, setAppErrorAC, setAppErrorAT, setAppStatusAC} from "../app-reducer";
+import {AxiosError} from "axios";
+import {handleServerAppError, handleServerNetworkError} from "../error-utils";
 
 export type removeTodolistAT = ReturnType<typeof removeTodolistAC>
 export type addTodolistAT = ReturnType<typeof addTodolistAC>
@@ -84,6 +86,8 @@ export const removeTodolistTC = (id: string) => (dispatch: Dispatch<AppActionsTy
     todolistAPI.deleteTodolist(id).then(() => {
         dispatch(removeTodolistAC(id))
         dispatch(setAppStatusAC('succeeded'))
+    }).catch((e: AxiosError) => {
+        handleServerNetworkError(e, dispatch)
     })
 }
 
@@ -95,14 +99,19 @@ export const addTodolistTC = (title: string) => (dispatch: Dispatch<AppActionsTy
                 dispatch(addTodolistAC(res.data.data.item))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-                if (res.data.messages[0]) {
+                handleServerAppError(res.data, dispatch)
+                /*if (res.data.messages[0]) {
                     dispatch(setAppErrorAC(res.data.messages[0]))
                 } else {
                     dispatch(setAppErrorAC('some error'))
                 }
-                dispatch(setAppStatusAC('failed'))
+                dispatch(setAppStatusAC('failed'))*/
             }
-        })
+
+        }).catch((e: AxiosError) => {
+        handleServerNetworkError(e, dispatch)
+    })
+
 }
 
 export const changeTodolistTitleTC = (id: string, title: string) => (dispatch: Dispatch<AppActionsType>) => {

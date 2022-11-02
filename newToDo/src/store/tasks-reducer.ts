@@ -4,6 +4,8 @@ import {Dispatch} from "redux";
 import {AppActionsType, AppRootStateType} from "./store";
 import {TasksStateType} from "../AppWithRedux";
 import {setAppErrorAC, setAppErrorAT, setAppStatusAC, setAppStatusAT} from "../app-reducer";
+import {AxiosError} from "axios";
+import {handleServerAppError, handleServerNetworkError} from "../error-utils";
 
 
 export type removeTaskAT = ReturnType<typeof removeTaskAC>
@@ -156,15 +158,18 @@ export const createTaskTC = (todolistId: string, title: string) => (dispatch: Di
                 dispatch(addTaskAC(res.data.data.item))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-                if (res.data.messages[0]) {
+                handleServerAppError<{ item: TaskType }>(res.data, dispatch)
+                /*if (res.data.messages[0]) {
                     dispatch(setAppErrorAC(res.data.messages[0]))
                 } else {
                     dispatch(setAppErrorAC('some error'))
                 }
-                dispatch(setAppStatusAC('failed'))
+                dispatch(setAppStatusAC('failed'))*/
             }
 
-        })
+        }).catch((e: AxiosError) => {
+        handleServerNetworkError(e, dispatch)
+    })
 
 }
 
@@ -227,5 +232,8 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
             .then(() => {
                 dispatch(updateTaskAC(taskId, domainModel, todolistId))
                 dispatch(setAppStatusAC('succeeded'))
-            })
+            }).catch((e: AxiosError) => {
+            dispatch(setAppStatusAC("failed"))
+            dispatch(setAppErrorAC(e.message))
+        })
     }
