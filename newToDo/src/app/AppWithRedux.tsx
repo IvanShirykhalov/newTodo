@@ -1,33 +1,21 @@
-import React, {useCallback, useEffect} from 'react';
-import {TodoList} from "../TodoList";
-import {AddItemForm} from "../components/AddItemForm/AddItemForm";
-import {
-    addTodolistTC,
-    changeTodolistFilterAC,
-    changeTodolistTitleTC, fetchTodolist, FilterValuesType,
-    removeTodolistTC, TodolistDomainType,
-} from "../store/todolists-reducer";
-import {
-    createTaskTC, removeTaskTC, updateTaskTC
-} from "../store/tasks-reducer";
-import {useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "../store/store";
-import {TaskStatuses, TaskType} from "../api/todolist-api";
-import {RequestStatusType} from "../app-reducer";
+import React from 'react';
 
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "./store";
+import {TaskType} from "../api/todolist-api";
+import {RequestStatusType} from "./app-reducer";
 import {
     AppBar,
     Button,
     Container,
-    Grid,
     IconButton,
     LinearProgress,
-    Paper,
     Toolbar,
     Typography
 } from "@mui/material";
 import {Menu} from "@mui/icons-material";
-import {ErrorSnackbar} from "../ErrorSnackbar";
+import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
+import {TodolistLists} from "../features/TodolistsList/TodolistLists";
 
 
 export type TasksStateType = {
@@ -36,46 +24,8 @@ export type TasksStateType = {
 
 function AppWithRedux() {
 
-    let todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
-    let tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
-
-    const dispatch = useAppDispatch()
-
-    useEffect(() => {
-        dispatch(fetchTodolist)
-    }, [dispatch])
-
-
-    const addTask = useCallback((title: string, todolistId: string) => {
-        dispatch(createTaskTC(todolistId, title))
-    }, [dispatch])
-    const changeTaskStatus = useCallback((taskID: string, status: TaskStatuses, todoListID: string) => {
-        dispatch(updateTaskTC(taskID, {status}, todoListID))
-    }, [dispatch])
-    const changeTaskTitle = useCallback((taskID: string, title: string, todoListID: string) => {
-        dispatch(updateTaskTC(taskID, {title}, todoListID))
-    }, [dispatch])
-    const removeTask = useCallback((taskId: string, todoListId: string) => {
-        dispatch(removeTaskTC(todoListId, taskId))
-    }, [dispatch])
-
-
-    const removeTodoList = useCallback((todoListID: string) => {
-        dispatch(removeTodolistTC(todoListID))
-    }, [dispatch])
-    const addTodoList = useCallback((title: string) => {
-        dispatch(addTodolistTC(title))
-    }, [dispatch])
-    const changeTodoListFilter = useCallback((filter: FilterValuesType, todoListID: string) => {
-        dispatch(changeTodolistFilterAC(todoListID, filter))
-    }, [dispatch])
-    const changeTodoListTitle = useCallback((title: string, todoListID: string) => {
-        dispatch(changeTodolistTitleTC(todoListID, title))
-    }, [dispatch])
-
-
-    const todoListComponents = todoLists.map(tl => {
+    /*const todoListComponents = todoLists.map(tl => {
 
         return (
             <Grid item key={tl.id}>
@@ -97,7 +47,7 @@ function AppWithRedux() {
                 </Paper>
             </Grid>
         );
-    })
+    })*/
 
     return (
         <div className={"App"}>
@@ -115,21 +65,14 @@ function AppWithRedux() {
             </AppBar>
             {status === "loading" && <LinearProgress/>}
             <Container fixed>
-                <Grid container style={{padding: "20px 0"}}>
-                    <AddItemForm AddItem={addTodoList}/>
-                </Grid>
-                <Grid container spacing={4}>
-                    {todoListComponents}
-                </Grid>
+                <TodolistLists/>
             </Container>
         </div>
     )
 }
 
 
-export const TodolistLists = () => {
 
-}
 
 export default AppWithRedux;
 

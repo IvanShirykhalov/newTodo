@@ -5,8 +5,8 @@ import {
     TodolistDomainType,
     todolistsReducer
 } from "./todolists-reducer";
-import {TaskPriorities, TaskStatuses} from "../api/todolist-api";
-import {TasksStateType} from "../app/AppWithRedux";
+import {TaskPriorities, TaskStatuses} from "../../api/todolist-api";
+import {TasksStateType} from "../../app/AppWithRedux";
 import {v1} from "uuid";
 
 test('ids should be equals', () => {

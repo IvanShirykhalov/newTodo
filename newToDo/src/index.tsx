@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker';
 
 import AppWithRedux from "./app/AppWithRedux";
 import {Provider} from "react-redux";
-import {store} from "./store/store";
+import {store} from "./app/store";
 import {lightBlue, purple} from "@mui/material/colors";
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import {createTheme} from '@mui/material/styles';

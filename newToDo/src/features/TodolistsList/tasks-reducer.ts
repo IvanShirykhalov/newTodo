@@ -1,11 +1,11 @@
 import {addTodolistAT, fetchTodolistAT, removeTodolistAT} from "./todolists-reducer";
-import {TaskPriorities, TaskStatuses, TaskType, todolistAPI, UpdateTaskModelType} from "../api/todolist-api";
+import {TaskPriorities, TaskStatuses, TaskType, todolistAPI, UpdateTaskModelType} from "../../api/todolist-api";
 import {Dispatch} from "redux";
-import {AppActionsType, AppRootStateType} from "./store";
-import {TasksStateType} from "../app/AppWithRedux";
-import {RequestStatusType, setAppErrorAT, setAppStatusAC, setAppStatusAT} from "../app-reducer";
+import {AppActionsType, AppRootStateType} from "../../app/store";
+import {TasksStateType} from "../../app/AppWithRedux";
+import {RequestStatusType, setAppErrorAT, setAppStatusAC, setAppStatusAT} from "../../app/app-reducer";
 import {AxiosError} from "axios";
-import {handleServerAppError, handleServerNetworkError} from "../error-utils";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
 
 export const tasksReducer = (state = initialState, action: TasksActionType): TasksStateType => {
