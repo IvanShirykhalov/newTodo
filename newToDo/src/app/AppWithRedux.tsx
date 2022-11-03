@@ -1,19 +1,19 @@
 import React, {useCallback, useEffect} from 'react';
-import {TodoList} from "./TodoList";
-import {AddItemForm} from "./AddItemForm";
+import {TodoList} from "../TodoList";
+import {AddItemForm} from "../components/AddItemForm/AddItemForm";
 import {
     addTodolistTC,
     changeTodolistFilterAC,
     changeTodolistTitleTC, fetchTodolist, FilterValuesType,
     removeTodolistTC, TodolistDomainType,
-} from "./store/todolists-reducer";
+} from "../store/todolists-reducer";
 import {
     createTaskTC, removeTaskTC, updateTaskTC
-} from "./store/tasks-reducer";
+} from "../store/tasks-reducer";
 import {useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "./store/store";
-import {TaskStatuses, TaskType} from "./api/todolist-api";
-import {RequestStatusType} from "./app-reducer";
+import {AppRootStateType, useAppDispatch} from "../store/store";
+import {TaskStatuses, TaskType} from "../api/todolist-api";
+import {RequestStatusType} from "../app-reducer";
 
 import {
     AppBar,
@@ -27,7 +27,7 @@ import {
     Typography
 } from "@mui/material";
 import {Menu} from "@mui/icons-material";
-import {ErrorSnackbar} from "./ErrorSnackbar";
+import {ErrorSnackbar} from "../ErrorSnackbar";
 
 
 export type TasksStateType = {
@@ -124,6 +124,11 @@ function AppWithRedux() {
             </Container>
         </div>
     )
+}
+
+
+export const TodolistLists = () => {
+
 }
 
 export default AppWithRedux;

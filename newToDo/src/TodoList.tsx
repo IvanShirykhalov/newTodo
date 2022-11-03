@@ -1,6 +1,6 @@
 import React, {FC, memo, useCallback, useEffect} from 'react';
-import {AddItemForm} from "./AddItemForm";
-import {EditableSpan} from "./EditableSpan";
+import {AddItemForm} from "./components/AddItemForm/AddItemForm";
+import {EditableSpan} from "./components/EditableSpan/EditableSpan";
 import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
 import {FilterValuesType} from "./store/todolists-reducer";
@@ -50,6 +50,7 @@ export const TodoList: FC<TodoListPropsType> = memo((props) => {
             return (<Task key={t.id}
                           task={t}
                           todolistId={props.todoListId}
+                          entityStatus={props.entityStatus}
             />)
         }) : <span>Tasks list is empty</span>
 

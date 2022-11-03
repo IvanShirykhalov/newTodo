@@ -1,17 +1,19 @@
 import React, {ChangeEvent, memo} from 'react';
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from "./components/EditableSpan/EditableSpan";
 import {removeTaskTC, updateTaskTC} from "./store/tasks-reducer";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
 import {useAppDispatch} from "./store/store";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
-import { DeleteOutline } from '@mui/icons-material';
+import {DeleteOutline} from '@mui/icons-material';
+import {RequestStatusType} from "./app-reducer";
 
 type TaskPropsType = {
     task: TaskType
     todolistId: string
+    entityStatus: RequestStatusType
 }
 
-export const Task = memo(({task, todolistId}: TaskPropsType) => {
+export const Task = memo(({task, todolistId, entityStatus}: TaskPropsType) => {
 
     const {id, title, status} = task
     const dispatch = useAppDispatch()
@@ -27,7 +29,8 @@ export const Task = memo(({task, todolistId}: TaskPropsType) => {
         <ListItem key={id} divider>
             <IconButton onClick={removeTask}
                         size={"small"}
-                        color={"secondary"}>
+                        color={"secondary"}
+                        disabled={entityStatus === 'loading'}>
                 <DeleteOutline/>
             </IconButton>
             <Checkbox
