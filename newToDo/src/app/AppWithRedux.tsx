@@ -16,38 +16,26 @@ import {
 import {Menu} from "@mui/icons-material";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {TodolistLists} from "../features/TodolistsList/TodolistLists";
+import {Login} from "../features/Login/Login";
+import {Navigate, Route, Routes} from "react-router-dom";
 
 
 export type TasksStateType = {
     [todolist_ID: string]: Array<TaskType>
 }
+type PropsType = {
+    demo?: boolean
+}
 
-function AppWithRedux() {
+enum ROUTS {
+    DEFAULT = '/',
+    LOGIN = 'login',
+    NOT_FOUND = '404'
+}
+
+function AppWithRedux({demo = false}: PropsType) {
 
     let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
-    /*const todoListComponents = todoLists.map(tl => {
-
-        return (
-            <Grid item key={tl.id}>
-                <Paper variant={"outlined"} style={{padding: "20px"}}>
-                    <TodoList
-                        todoListId={tl.id}
-                        title={tl.title}
-                        entityStatus={tl.entityStatus}
-                        filter={tl.filter}
-                        task={tasks[tl.id]}
-                        removeTask={removeTask}
-                        changeFilter={changeTodoListFilter}
-                        addTask={addTask}
-                        changeTaskStatus={changeTaskStatus}
-                        removeTodoList={removeTodoList}
-                        changeTodoListTitle={changeTodoListTitle}
-                        changeTaskTitle={changeTaskTitle}
-                    />
-                </Paper>
-            </Grid>
-        );
-    })*/
 
     return (
         <div className={"App"}>
@@ -65,13 +53,16 @@ function AppWithRedux() {
             </AppBar>
             {status === "loading" && <LinearProgress/>}
             <Container fixed>
-                <TodolistLists/>
+                <Routes>
+                    <Route path={ROUTS.DEFAULT} element={<TodolistLists demo={demo}/>}/>
+                    <Route path={ROUTS.LOGIN} element={<Login/>}/>
+                    <Route path={ROUTS.NOT_FOUND} element={<h1>404. PAGE NOT FOUND</h1>}/>
+                    <Route path="*" element={<Navigate to={ROUTS.NOT_FOUND}/>}/>
+                </Routes>
             </Container>
         </div>
     )
 }
-
-
 
 
 export default AppWithRedux;

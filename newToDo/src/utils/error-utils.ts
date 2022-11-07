@@ -2,6 +2,7 @@ import {Dispatch} from 'redux';
 import {setAppErrorAC, setAppStatusAC, StatusActionsType} from "../app/app-reducer";
 import {ResponseType} from "../api/todolist-api";
 
+
 // generic function
 export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: Dispatch<StatusActionsType>) => {
     if (data.messages.length) {
