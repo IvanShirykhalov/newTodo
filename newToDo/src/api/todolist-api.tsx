@@ -1,4 +1,6 @@
 import axios, {AxiosResponse} from 'axios'
+import {LoginDataType} from "../features/Login/Login";
+import {string} from "prop-types";
 
 
 const instance = axios.create({
@@ -34,8 +36,14 @@ export const todolistAPI = {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-        return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
+        return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<TaskType>>>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
     },
+}
+
+export const authAPI = {
+    login(data: LoginDataType) {
+        return instance.post<LoginDataType, AxiosResponse<ResponseType<{ userId: string }>>>('auth/login', data)
+    }
 }
 
 
@@ -73,6 +81,12 @@ export enum TaskPriorities {
     Hi = 2,
     Urgently = 3,
     Later = 4
+}
+
+export enum Result_Code {
+    OK = 0,
+    ERROR = 1,
+    CAPTCHA = 10,
 }
 
 export type TaskType = {

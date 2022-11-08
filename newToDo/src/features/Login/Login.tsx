@@ -8,6 +8,8 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
+import {useAppDispatch} from "../../app/store";
+import {loginTC} from "./auth-reducer";
 
 type FormikErrorType = {
     email?: string
@@ -16,15 +18,25 @@ type FormikErrorType = {
 }
 
 
+export type LoginDataType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha: string
+}
+
 export const Login = () => {
+
+    const dispatch = useAppDispatch()
 
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
-            rememberMe: false
+            rememberMe: false,
+            captcha: '',
         },
-        validate: (values) => {
+        validate: (values: LoginDataType) => {
             const errors: FormikErrorType = {};
             if (!values.email) {
                 errors.email = 'Required';
@@ -40,8 +52,8 @@ export const Login = () => {
 
             return errors;
         },
-        onSubmit: values => {
-            alert(JSON.stringify(values));
+        onSubmit: (values: LoginDataType) => {
+            dispatch(loginTC(values))
             formik.resetForm()
         },
     })
