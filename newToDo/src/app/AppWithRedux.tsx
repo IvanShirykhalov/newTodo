@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {useSelector} from "react-redux";
-import {AppRootStateType} from "./store";
+import {AppRootStateType, useAppDispatch} from "./store";
 import {TaskType} from "../api/todolist-api";
 import {RequestStatusType} from "./app-reducer";
 import {
@@ -18,6 +18,7 @@ import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {TodolistLists} from "../features/TodolistsList/TodolistLists";
 import {Login} from "../features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
+import {initializeAppTC} from "../features/Login/auth-reducer";
 
 
 export type TasksStateType = {
@@ -27,7 +28,7 @@ type PropsType = {
     demo?: boolean
 }
 
-enum ROUTS {
+export enum ROUTS {
     DEFAULT = '/',
     LOGIN = 'login',
     NOT_FOUND = '404'
@@ -35,7 +36,12 @@ enum ROUTS {
 
 function AppWithRedux({demo = false}: PropsType) {
 
+    const dispatch = useAppDispatch()
+
     let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+    useEffect(() => {
+        dispatch(initializeAppTC())
+    }, [dispatch])
 
     return (
         <div className={"App"}>

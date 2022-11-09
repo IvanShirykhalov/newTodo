@@ -25,7 +25,6 @@ export const setIsLoggedInAC = (value: boolean) =>
 // thunks
 export const loginTC = (data: LoginDataType) => async (dispatch: Dispatch<AuthActionsType>) => {
     dispatch(setAppStatusAC('loading'))
-
     try {
         const res = await authAPI.login(data)
 
@@ -38,8 +37,24 @@ export const loginTC = (data: LoginDataType) => async (dispatch: Dispatch<AuthAc
     } catch (e) {
         handleServerNetworkError(e as { message: string }, dispatch)
     }
-
 }
+
+export const initializeAppTC = () => async (dispatch: Dispatch<AuthActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+        const res = await authAPI.me()
+
+        if (res.data.resultCode === Result_Code.OK) {
+            dispatch(setIsLoggedInAC(true))
+            dispatch(setAppStatusAC('succeeded'))
+        } else {
+            handleServerAppError(res.data, dispatch)
+        }
+    } catch (e) {
+        handleServerNetworkError(e as { message: string }, dispatch)
+    }
+}
+
 
 // types
 export type AuthActionsType = ReturnType<typeof setIsLoggedInAC> | StatusActionsType
