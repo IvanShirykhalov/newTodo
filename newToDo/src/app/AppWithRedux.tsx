@@ -6,7 +6,7 @@ import {TaskType} from "../api/todolist-api";
 import {RequestStatusType} from "./app-reducer";
 import {
     AppBar,
-    Button,
+    Button, CircularProgress,
     Container,
     IconButton,
     LinearProgress,
@@ -18,7 +18,7 @@ import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {TodolistLists} from "../features/TodolistsList/TodolistLists";
 import {Login} from "../features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {initializeAppTC} from "../features/Login/auth-reducer";
+import {initializeAppTC, logoutTC} from "../features/Login/auth-reducer";
 
 
 export type TasksStateType = {
@@ -39,9 +39,24 @@ function AppWithRedux({demo = false}: PropsType) {
     const dispatch = useAppDispatch()
 
     let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+    let isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+    let isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
+    const logOut = () => {
+        dispatch(logoutTC())
+    }
+
     useEffect(() => {
         dispatch(initializeAppTC())
     }, [dispatch])
+
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
+
 
     return (
         <div className={"App"}>
@@ -54,7 +69,7 @@ function AppWithRedux({demo = false}: PropsType) {
                     <Typography variant={"h6"}>
                         Todolists
                     </Typography>
-                    <Button color={"inherit"} variant={"outlined"}>Login</Button>
+                    {isLoggedIn && <Button color={"inherit"} variant={"outlined"} onClick={logOut}>Log out</Button>}
                 </Toolbar>
             </AppBar>
             {status === "loading" && <LinearProgress/>}

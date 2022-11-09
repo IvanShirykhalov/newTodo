@@ -1,5 +1,5 @@
 import {Dispatch} from 'redux'
-import {setAppStatusAC, StatusActionsType} from '../../app/app-reducer'
+import {setAppStatusAC, setIsInitializedAC, StatusActionsType} from '../../app/app-reducer'
 import {LoginDataType} from "./Login";
 import {authAPI, Result_Code} from "../../api/todolist-api";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
@@ -46,6 +46,24 @@ export const initializeAppTC = () => async (dispatch: Dispatch<AuthActionsType>)
 
         if (res.data.resultCode === Result_Code.OK) {
             dispatch(setIsLoggedInAC(true))
+            dispatch(setAppStatusAC('succeeded'))
+        } else {
+            handleServerAppError(res.data, dispatch)
+        }
+    } catch (e) {
+        handleServerNetworkError(e as { message: string }, dispatch)
+    } finally {
+        dispatch(setIsInitializedAC(true))
+    }
+}
+
+export const logoutTC = () => async (dispatch: Dispatch<AuthActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+        const res = await authAPI.logout()
+
+        if (res.data.resultCode === Result_Code.OK) {
+            dispatch(setIsLoggedInAC(false))
             dispatch(setAppStatusAC('succeeded'))
         } else {
             handleServerAppError(res.data, dispatch)
