@@ -48,12 +48,6 @@ export const removeTaskAC = (todolistId: string, taskId: string) => {
 export const addTaskAC = (task: TaskType) => {
     return {type: "ADD-TASK", task} as const
 }
-export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todolistId: string) => {
-    return {type: "CHANGE-TASK-STATUS", taskId, status, todolistId} as const
-}
-export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string) => {
-    return {type: "CHANGE-TASK-TITLE", taskId, title, todolistId} as const
-}
 export const setTasksAC = (todoId: string, tasks: TaskType[]) => {
     return {type: "SET-TASKS", todoId, tasks} as const
 }
@@ -143,8 +137,6 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
 const initialState: TasksStateType = {}
 export type removeTaskAT = ReturnType<typeof removeTaskAC>
 export type addTaskAT = ReturnType<typeof addTaskAC>
-export type changeTaskStatusAT = ReturnType<typeof changeTaskStatusAC>
-export type changeTaskTitleAT = ReturnType<typeof changeTaskTitleAC>
 export type setTasksAT = ReturnType<typeof setTasksAC>
 export type updateTaskAT = ReturnType<typeof updateTaskAC>
 export type changeTaskEntityStatusAT = ReturnType<typeof changeTaskEntityStatusAC>
@@ -161,8 +153,6 @@ export type UpdateDomainTaskModelType = {
 export type TasksActionType =
     removeTaskAT
     | addTaskAT
-    | changeTaskStatusAT
-    | changeTaskTitleAT
     | addTodolistAT
     | removeTodolistAT
     | fetchTodolistAT
