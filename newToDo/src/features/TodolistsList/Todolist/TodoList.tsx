@@ -3,12 +3,13 @@ import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../../../api/todolist-api";
-import {FilterValuesType} from "../todolists-reducer";
-import {fetchTasksTC} from "../tasks-reducer";
-import {useAppDispatch} from "../../../app/store";
+import {changeTodolistFilterAC, changeTodolistTitleTC, FilterValuesType, removeTodolistTC} from "../todolists-reducer";
+import {createTaskTC, fetchTasksTC} from "../tasks-reducer";
+import {AppRootStateType, useAppDispatch} from "../../../app/store";
 import {Button, IconButton, List} from "@mui/material";
 import {DeleteOutline} from "@mui/icons-material";
 import {RequestStatusType} from "../../../app/app-reducer";
+import {useSelector} from "react-redux";
 
 type TodoListPropsType = {
     todoListId: string
@@ -16,17 +17,11 @@ type TodoListPropsType = {
     entityStatus: RequestStatusType
     task: TaskType[];
     filter: FilterValuesType
-    removeTask: (todolistID: string, taskID: string) => void;
-    changeFilter: (filter: FilterValuesType, todolistID: string) => void
-    addTask: (title: string, todolistID: string) => void
-    changeTaskStatus: (taskID: string, status: TaskStatuses, todolistID: string) => void
-    removeTodoList: (todolistID: string) => void
-    changeTodoListTitle: (title: string, todoListID: string) => void
-    changeTaskTitle: (taskID: string, title: string, todoListID: string) => void
     demo: boolean
 }
 
 export const TodoList: FC<TodoListPropsType> = memo(({demo = false, ...props}) => {
+
 
     const dispatch = useAppDispatch()
 
@@ -58,11 +53,10 @@ export const TodoList: FC<TodoListPropsType> = memo(({demo = false, ...props}) =
             />)
         }) : <span>Tasks list is empty</span>
 
-    const addTask = useCallback((title: string) => props.addTask(title, props.todoListId), [props.addTask, props.todoListId])
-    const removeTodolist = () => props.removeTodoList(props.todoListId)
-    const handlerCreator = (filter: FilterValuesType) => props.changeFilter(filter, props.todoListId)
-    const changeTodoListTitle = (title: string) => props.changeTodoListTitle(title, props.todoListId)
-
+    const addTask = useCallback((title: string) => dispatch(createTaskTC(props.todoListId, title)), [dispatch])
+    const removeTodolist = () => dispatch(removeTodolistTC(props.todoListId))
+    const handlerCreator = (filter: FilterValuesType) => dispatch(changeTodolistFilterAC(props.todoListId, filter))
+    const changeTodoListTitle = (title: string) => dispatch(changeTodolistTitleTC(props.todoListId, title))
 
     return (
         <div>

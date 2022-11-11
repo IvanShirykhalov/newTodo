@@ -37,31 +37,8 @@ export const TodolistLists: React.FC<PropsType> = ({demo = false}) => {
     }, [dispatch])
 
 
-    const addTask = useCallback((title: string, todolistId: string) => {
-        dispatch(createTaskTC(todolistId, title))
-    }, [dispatch])
-    const changeTaskStatus = useCallback((taskID: string, status: TaskStatuses, todoListID: string) => {
-        dispatch(updateTaskTC(taskID, {status}, todoListID))
-    }, [dispatch])
-    const changeTaskTitle = useCallback((taskID: string, title: string, todoListID: string) => {
-        dispatch(updateTaskTC(taskID, {title}, todoListID))
-    }, [dispatch])
-    const removeTask = useCallback((taskId: string, todoListId: string) => {
-        dispatch(removeTaskTC(todoListId, taskId))
-    }, [dispatch])
-
-
-    const removeTodoList = useCallback((todoListID: string) => {
-        dispatch(removeTodolistTC(todoListID))
-    }, [dispatch])
     const addTodoList = useCallback((title: string) => {
         dispatch(addTodolistTC(title))
-    }, [dispatch])
-    const changeTodoListFilter = useCallback((filter: FilterValuesType, todoListID: string) => {
-        dispatch(changeTodolistFilterAC(todoListID, filter))
-    }, [dispatch])
-    const changeTodoListTitle = useCallback((title: string, todoListID: string) => {
-        dispatch(changeTodolistTitleTC(todoListID, title))
     }, [dispatch])
 
 
@@ -86,13 +63,6 @@ export const TodolistLists: React.FC<PropsType> = ({demo = false}) => {
                                     entityStatus={tl.entityStatus}
                                     filter={tl.filter}
                                     task={tasks[tl.id]}
-                                    removeTask={removeTask}
-                                    changeFilter={changeTodoListFilter}
-                                    addTask={addTask}
-                                    changeTaskStatus={changeTaskStatus}
-                                    removeTodoList={removeTodoList}
-                                    changeTodoListTitle={changeTodoListTitle}
-                                    changeTaskTitle={changeTaskTitle}
                                     demo={demo}
                                 />
                             </Paper>
