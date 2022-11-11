@@ -5,11 +5,10 @@ import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../../../api/todolist-api";
 import {changeTodolistFilterAC, changeTodolistTitleTC, FilterValuesType, removeTodolistTC} from "../todolists-reducer";
 import {createTaskTC, fetchTasksTC} from "../tasks-reducer";
-import {AppRootStateType, useAppDispatch} from "../../../app/store";
+import {useAppDispatch} from "../../../app/store";
 import {Button, IconButton, List} from "@mui/material";
 import {DeleteOutline} from "@mui/icons-material";
 import {RequestStatusType} from "../../../app/app-reducer";
-import {useSelector} from "react-redux";
 
 type TodoListPropsType = {
     todoListId: string
@@ -25,12 +24,12 @@ export const TodoList: FC<TodoListPropsType> = memo(({demo = false, ...props}) =
 
     const dispatch = useAppDispatch()
 
-    useEffect(() => {
+/*    useEffect(() => {
         if (demo) {
             return
         }
         dispatch(fetchTasksTC(props.todoListId))
-    }, [dispatch])
+    }, [dispatch])*/
 
     let tasks = props.task
     switch (props.filter) {

@@ -33,7 +33,7 @@ export const TodolistLists: React.FC<PropsType> = ({demo = false}) => {
         if (demo || !isLoggedIn) {
             return
         }
-        dispatch(fetchTodolist)
+        dispatch(fetchTodolist())
     }, [dispatch])
 
 
