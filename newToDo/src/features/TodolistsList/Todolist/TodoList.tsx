@@ -3,7 +3,13 @@ import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../../../api/todolist-api";
-import {changeTodolistFilterAC, changeTodolistTitleTC, FilterValuesType, removeTodolistTC} from "../todolists-reducer";
+import {
+    changeTodolistFilterAC,
+    changeTodolistTitleTC,
+    FilterValuesType,
+    removeTodolistTC,
+    TodolistDomainType
+} from "../todolists-reducer";
 import {createTaskTC, fetchTasksTC} from "../tasks-reducer";
 import {useAppDispatch} from "../../../app/store";
 import {Button, IconButton, List} from "@mui/material";
@@ -11,11 +17,8 @@ import {DeleteOutline} from "@mui/icons-material";
 import {RequestStatusType} from "../../../app/app-reducer";
 
 type TodoListPropsType = {
-    todoListId: string
-    title: string
-    entityStatus: RequestStatusType
+    todolist: TodolistDomainType
     task: TaskType[];
-    filter: FilterValuesType
     demo: boolean
 }
 
@@ -24,15 +27,9 @@ export const TodoList: FC<TodoListPropsType> = memo(({demo = false, ...props}) =
 
     const dispatch = useAppDispatch()
 
-/*    useEffect(() => {
-        if (demo) {
-            return
-        }
-        dispatch(fetchTasksTC(props.todoListId))
-    }, [dispatch])*/
 
     let tasks = props.task
-    switch (props.filter) {
+    switch (props.todolist.filter) {
         case 'active':
             tasks = tasks.filter(t => t.status === TaskStatuses.New)
             break;
@@ -47,26 +44,27 @@ export const TodoList: FC<TodoListPropsType> = memo(({demo = false, ...props}) =
         tasks.map(t => {
             return (<Task key={t.id}
                           task={t}
-                          todolistId={props.todoListId}
-                          entityStatus={props.entityStatus}
+                          todolistId={props.todolist.id}
+                          entityStatus={props.todolist.entityStatus}
             />)
         }) : <span>Tasks list is empty</span>
 
-    const addTask = useCallback((title: string) => dispatch(createTaskTC(props.todoListId, title)), [dispatch])
-    const removeTodolist = () => dispatch(removeTodolistTC(props.todoListId))
-    const handlerCreator = (filter: FilterValuesType) => dispatch(changeTodolistFilterAC(props.todoListId, filter))
-    const changeTodoListTitle = (title: string) => dispatch(changeTodolistTitleTC(props.todoListId, title))
+    const addTask = useCallback((title: string) => dispatch(createTaskTC(props.todolist.id, title)), [dispatch])
+    const removeTodolist = () => dispatch(removeTodolistTC(props.todolist.id))
+    const handlerCreator = (filter: FilterValuesType) => dispatch(changeTodolistFilterAC(props.todolist.id, filter))
+    const changeTodoListTitle = (title: string) => dispatch(changeTodolistTitleTC(props.todolist.id, title))
 
     return (
         <div>
             <h3>
-                <IconButton onClick={removeTodolist} color={"secondary"} disabled={props.entityStatus === 'loading'}>
+                <IconButton onClick={removeTodolist} color={"secondary"}
+                            disabled={props.todolist.entityStatus === 'loading'}>
                     <DeleteOutline/>
                 </IconButton>
-                <EditableSpan title={props.title} changeTitle={changeTodoListTitle}/>
+                <EditableSpan title={props.todolist.title} changeTitle={changeTodoListTitle}/>
 
             </h3>
-            <AddItemForm AddItem={addTask}/>
+            <AddItemForm AddItem={addTask} disabled={props.todolist.entityStatus === 'loading'}/>
             <List>
                 {taskItem}
             </List>
@@ -74,19 +72,19 @@ export const TodoList: FC<TodoListPropsType> = memo(({demo = false, ...props}) =
                 <Button
                     size={"small"}
                     variant={"contained"}
-                    color={props.filter === 'all' ? "secondary" : "primary"}
+                    color={props.todolist.filter === 'all' ? "secondary" : "primary"}
                     onClick={() => handlerCreator('all')}>All
                 </Button>
                 <Button
                     size={"small"}
                     variant={"contained"}
-                    color={props.filter === 'active' ? "secondary" : "primary"}
+                    color={props.todolist.filter === 'active' ? "secondary" : "primary"}
                     onClick={() => handlerCreator('active')}>Active
                 </Button>
                 <Button
                     size={"small"}
                     variant={"contained"}
-                    color={props.filter === 'completed' ? "secondary" : "primary"}
+                    color={props.todolist.filter === 'completed' ? "secondary" : "primary"}
                     onClick={() => handlerCreator('completed')}>Completed
                 </Button>
             </div>

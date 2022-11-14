@@ -1,4 +1,10 @@
-import {addTodolistAT, fetchTodolistAT, removeTodolistAT} from "./todolists-reducer";
+import {
+    addTodolistAT,
+    changeTodolistEntityStatusAC,
+    clearTodolistDataAT,
+    fetchTodolistAT,
+    removeTodolistAT
+} from "./todolists-reducer";
 import {TaskPriorities, TaskStatuses, TaskType, todolistAPI, UpdateTaskModelType} from "../../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppActionsType, AppRootStateType} from "../../app/store";
@@ -36,6 +42,15 @@ export const tasksReducer = (state = initialState, action: TasksActionType): Tas
             return stateCopy
         case "SET-TASKS":
             return {...state, [action.todoId]: action.tasks}
+        case "CHANGE-TASK-ENTITY-STATUS": {
+            return {
+                ...state,
+                [action.todolistId]: state[action.todolistId]
+                    .map(t => t.id === action.taskId ? {...t, entityStatus: action.entityStatus} : t)
+            }
+        }
+        case "CLEAR-TODOLIST-DATA":
+            return {}
         default:
             return state
     }
@@ -62,6 +77,7 @@ export const changeTaskEntityStatusAC = (taskId: string, todolistId: string, ent
 //TC
 export const fetchTasksTC = (todoId: string) => (dispatch: Dispatch<AppActionsType>) => {
     dispatch(setAppStatusAC('loading'))
+
     todolistAPI.getTasks(todoId)
         .then((res) => {
             dispatch(setTasksAC(todoId, res.data.items))
@@ -72,6 +88,7 @@ export const fetchTasksTC = (todoId: string) => (dispatch: Dispatch<AppActionsTy
 }
 export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch<AppActionsType>) => {
     dispatch(setAppStatusAC('loading'))
+    dispatch(changeTaskEntityStatusAC(taskId, todolistId, 'loading'))
     todolistAPI.deleteTask(todolistId, taskId)
         .then((res) => {
             if (res.data.resultCode === 0) {
@@ -161,3 +178,4 @@ export type TasksActionType =
     | setAppStatusAT
     | setAppErrorAT
     | changeTaskEntityStatusAT
+    | clearTodolistDataAT

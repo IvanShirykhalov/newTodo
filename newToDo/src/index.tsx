@@ -24,7 +24,7 @@ ReactDOM.render(
         <CssBaseline/> {/*сброс стилей css*/}
         <Provider store={store}>
             <BrowserRouter>
-                <AppWithRedux/>
+                <AppWithRedux />
             </BrowserRouter>
         </Provider>
     </ThemeProvider>

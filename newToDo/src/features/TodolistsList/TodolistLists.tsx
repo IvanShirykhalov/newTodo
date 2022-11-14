@@ -15,13 +15,15 @@ import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {TodoList} from "./Todolist/TodoList";
 import {ROUTS, TasksStateType} from "../../app/AppWithRedux";
 import {Navigate} from "react-router-dom";
+import {RequestStatusType} from "../../app/app-reducer";
 
 type PropsType = {
     demo?: boolean
 }
 
-export const TodolistLists: React.FC<PropsType> = ({demo = false}) => {
+export const TodolistLists: React.FC<PropsType> = ({demo = false, ...props}) => {
 
+    let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     let todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     let tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
@@ -58,10 +60,7 @@ export const TodolistLists: React.FC<PropsType> = ({demo = false}) => {
                         <Grid item key={tl.id}>
                             <Paper variant={"outlined"} style={{padding: "20px"}}>
                                 <TodoList
-                                    todoListId={tl.id}
-                                    title={tl.title}
-                                    entityStatus={tl.entityStatus}
-                                    filter={tl.filter}
+                                    todolist={tl}
                                     task={tasks[tl.id]}
                                     demo={demo}
                                 />

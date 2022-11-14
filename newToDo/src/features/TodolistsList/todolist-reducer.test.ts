@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {
-    addTodolistAC,
+    addTodolistAC, changeTodolistEntityStatusAC,
     changeTodolistFilterAC,
     changeTodolistTitleAC, FilterValuesType,
     removeTodolistAC, TodolistDomainType,
@@ -54,4 +54,11 @@ test('correct title of todolist should be changed', () => {
 
     expect(endState[1].title).toBe('New Title')
     expect(endState[0].title).toBe('What to learn')
+})
+
+test('correct title of todolist should be changed', ()=>{
+    const  endState = todolistsReducer(startState, changeTodolistEntityStatusAC(todolistId2, 'loading'))
+
+    expect(endState[1].entityStatus).toBe('loading')
+    expect(endState[0].entityStatus).toBe('idle')
 })

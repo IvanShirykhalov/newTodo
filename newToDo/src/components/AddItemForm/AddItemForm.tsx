@@ -1,15 +1,16 @@
 import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 import {IconButton, TextField} from "@mui/material";
 import {AddCircleOutline} from "@mui/icons-material";
-
+import {RequestStatusType} from "../../app/app-reducer";
 
 
 type AddItemFormPropsType = {
     AddItem: (title: string) => void
+    disabled?: boolean
 }
 
 
-export const AddItemForm =  memo((props: AddItemFormPropsType) => {
+export const AddItemForm = memo(({AddItem, disabled = false}: AddItemFormPropsType) => {
 
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
@@ -25,7 +26,7 @@ export const AddItemForm =  memo((props: AddItemFormPropsType) => {
     const addItem = () => {
         const trimmedTitle = title.trim()
         if (trimmedTitle) {
-            trimmedTitle && props.AddItem(trimmedTitle)
+            trimmedTitle && AddItem(trimmedTitle)
 
         } else {
             setError(true)
@@ -36,15 +37,15 @@ export const AddItemForm =  memo((props: AddItemFormPropsType) => {
     return (
         <div>
             <TextField
+                disabled={disabled}
                 label={"Title"}
                 size={"small"}
                 variant={"outlined"}
                 value={title}
                 onChange={changeTitle}
                 onKeyDown={onKeyDownAddItem}
-                error={error}
                 helperText={error && "Title is required!"}/>
-            <IconButton>
+            <IconButton disabled={disabled}>
                 <AddCircleOutline onClick={addItem}/>
             </IconButton>
         </div>

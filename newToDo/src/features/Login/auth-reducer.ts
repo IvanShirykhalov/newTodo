@@ -3,7 +3,7 @@ import {setAppStatusAC, setIsInitializedAC, StatusActionsType} from '../../app/a
 import {LoginDataType} from "./Login";
 import {authAPI, Result_Code} from "../../api/todolist-api";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
-import {AxiosError} from "axios";
+import {clearTodolistDataAC, clearTodolistDataAT} from "../TodolistsList/todolists-reducer";
 
 const initialState = {
     isLoggedIn: false
@@ -65,6 +65,7 @@ export const logoutTC = () => async (dispatch: Dispatch<AuthActionsType>) => {
         if (res.data.resultCode === Result_Code.OK) {
             dispatch(setIsLoggedInAC(false))
             dispatch(setAppStatusAC('succeeded'))
+            dispatch(clearTodolistDataAC())
         } else {
             handleServerAppError(res.data, dispatch)
         }
@@ -75,4 +76,4 @@ export const logoutTC = () => async (dispatch: Dispatch<AuthActionsType>) => {
 
 
 // types
-export type AuthActionsType = ReturnType<typeof setIsLoggedInAC> | StatusActionsType
+export type AuthActionsType = ReturnType<typeof setIsLoggedInAC> | StatusActionsType | clearTodolistDataAT
