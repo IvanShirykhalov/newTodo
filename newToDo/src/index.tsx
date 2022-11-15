@@ -15,7 +15,7 @@ const theme = createTheme({
     palette: {
         primary: purple,
         secondary: lightBlue,
-        /*        type: "dark"*/
+        //mode: "dark"
     }
 }) /*Изменение стиля mui*/
 
@@ -24,7 +24,7 @@ ReactDOM.render(
         <CssBaseline/> {/*сброс стилей css*/}
         <Provider store={store}>
             <BrowserRouter>
-                <AppWithRedux />
+                <AppWithRedux/>
             </BrowserRouter>
         </Provider>
     </ThemeProvider>
