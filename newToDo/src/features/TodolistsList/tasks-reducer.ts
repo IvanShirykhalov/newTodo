@@ -1,6 +1,5 @@
 import {
     addTodolistAT,
-    changeTodolistEntityStatusAC,
     clearTodolistDataAT,
     fetchTodolistAT,
     removeTodolistAT

@@ -8,7 +8,6 @@ import {addTodolistAC} from "./todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "../../api/todolist-api";
 import {TasksStateType} from "../../app/AppWithRedux";
 import {v1} from "uuid";
-import {RequestStatusType} from "../../app/app-reducer";
 
 let startState: TasksStateType
 

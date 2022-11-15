@@ -18,7 +18,7 @@ export default {
 const TaskReduxToStore = () => {
     const task = useSelector<AppRootStateType, TaskType>(state => state.tasks['todolistId1'][0])
 
-    return <Task task={task} todolistId={'todolistId1'} entityStatus={'idle'}/>
+    return <Task task={task} todolistId={'todolistId1'}/>
 }
 
 

@@ -34,7 +34,7 @@ export enum ROUTS {
     NOT_FOUND = '404'
 }
 
-function AppWithRedux({demo = false, ...props}: PropsType) {
+function AppWithRedux({demo = false}: PropsType) {
 
     const dispatch = useAppDispatch()
 
@@ -74,13 +74,13 @@ function AppWithRedux({demo = false, ...props}: PropsType) {
             </AppBar>
             {status === "loading" && <LinearProgress/>}
             <Container fixed>
-                <Routes>
-                    <Route path={ROUTS.DEFAULT}
-                           element={<TodolistLists demo={demo}/>}/>
-                    <Route path={ROUTS.LOGIN} element={<Login/>}/>
-                    <Route path={ROUTS.NOT_FOUND} element={<h1>404. PAGE NOT FOUND</h1>}/>
-                    <Route path="*" element={<Navigate to={ROUTS.NOT_FOUND}/>}/>
-                </Routes>
+                    <Routes>
+                        <Route path={ROUTS.DEFAULT}
+                               element={<TodolistLists demo={demo}/>}/>
+                        <Route path={ROUTS.LOGIN} element={<Login/>}/>
+                        <Route path={ROUTS.NOT_FOUND} element={<h1>404. PAGE NOT FOUND</h1>}/>
+                        <Route path="*" element={<Navigate to={ROUTS.NOT_FOUND}/>}/>
+                    </Routes>
             </Container>
         </div>
     )

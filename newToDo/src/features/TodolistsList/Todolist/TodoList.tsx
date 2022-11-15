@@ -1,4 +1,4 @@
-import React, {FC, memo, useCallback, useEffect} from 'react';
+import React, {FC, memo, useCallback} from 'react';
 import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Task} from "./Task/Task";
@@ -10,10 +10,11 @@ import {
     removeTodolistTC,
     TodolistDomainType
 } from "../todolists-reducer";
-import {createTaskTC, fetchTasksTC} from "../tasks-reducer";
-import {useAppDispatch} from "../../../app/store";
+import {createTaskTC} from "../tasks-reducer";
+import {AppRootStateType, useAppDispatch} from "../../../app/store";
 import {Button, IconButton, List} from "@mui/material";
 import {DeleteOutline} from "@mui/icons-material";
+import {useSelector} from "react-redux";
 import {RequestStatusType} from "../../../app/app-reducer";
 
 type TodoListPropsType = {
@@ -25,6 +26,7 @@ type TodoListPropsType = {
 export const TodoList: FC<TodoListPropsType> = memo(({demo = false, ...props}) => {
 
 
+    let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const dispatch = useAppDispatch()
 
 
@@ -64,7 +66,7 @@ export const TodoList: FC<TodoListPropsType> = memo(({demo = false, ...props}) =
                 <EditableSpan title={props.todolist.title} changeTitle={changeTodoListTitle}/>
 
             </h3>
-            <AddItemForm AddItem={addTask} disabled={props.todolist.entityStatus === 'loading'}/>
+            <AddItemForm AddItem={addTask} disabled={status === 'loading'}/>
             <List>
                 {taskItem}
             </List>

@@ -2,28 +2,23 @@ import React, {useCallback, useEffect} from "react";
 import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "../../app/store";
 import {
-    addTodolistTC, changeTodolistFilterAC, changeTodolistTitleTC,
+    addTodolistTC,
     fetchTodolist,
-    FilterValuesType,
-    removeTodolistTC,
     TodolistDomainType
 } from "./todolists-reducer";
-import {createTaskTC, removeTaskTC, updateTaskTC} from "./tasks-reducer";
-import {TaskStatuses} from "../../api/todolist-api";
 import {Grid, Paper} from "@mui/material";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {TodoList} from "./Todolist/TodoList";
 import {ROUTS, TasksStateType} from "../../app/AppWithRedux";
 import {Navigate} from "react-router-dom";
-import {RequestStatusType} from "../../app/app-reducer";
 
 type PropsType = {
     demo?: boolean
 }
 
-export const TodolistLists: React.FC<PropsType> = ({demo = false, ...props}) => {
+export const TodolistLists: React.FC<PropsType> = ({demo = false}) => {
 
-    let status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+
     let todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     let tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)

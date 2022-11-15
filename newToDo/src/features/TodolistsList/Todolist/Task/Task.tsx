@@ -2,10 +2,11 @@ import React, {ChangeEvent, memo} from 'react';
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import {removeTaskTC, updateTaskTC} from "../../tasks-reducer";
 import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
-import {useAppDispatch} from "../../../../app/store";
+import {AppRootStateType, useAppDispatch} from "../../../../app/store";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
 import {DeleteOutline} from '@mui/icons-material';
 import {RequestStatusType} from "../../../../app/app-reducer";
+import {useSelector} from "react-redux";
 
 type TaskPropsType = {
     task: TaskType
@@ -13,7 +14,9 @@ type TaskPropsType = {
     entityStatus: RequestStatusType
 }
 
-export const Task = memo(({task, todolistId, entityStatus}: TaskPropsType) => {
+export const Task = memo(({task, todolistId, ...props}: TaskPropsType) => {
+
+    let entityStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
 
     const {id, title, status} = task
     const dispatch = useAppDispatch()
@@ -36,7 +39,9 @@ export const Task = memo(({task, todolistId, entityStatus}: TaskPropsType) => {
             <Checkbox
                 size={"small"}
                 checked={status === TaskStatuses.Completed}
-                onChange={changeTaskStatus}/>
+                onChange={changeTaskStatus}
+                disabled={entityStatus === 'loading'}
+            />
             <EditableSpan title={title} changeTitle={changeTaskTitle}/>
         </ListItem>
     );
